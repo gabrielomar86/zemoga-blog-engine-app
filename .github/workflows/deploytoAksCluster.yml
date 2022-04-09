@@ -42,8 +42,8 @@ jobs:
       with:
         namespace: default
         manifests: |
-          manifests/deployment.yml
-          manifests/service.yml
+          k8s/manifests/deployment.yml
+          k8s/manifests/service.yml
         images: |
           interviewsacr.azurecr.io/interviewscluster:${{ github.sha }}
         imagepullsecrets: |
