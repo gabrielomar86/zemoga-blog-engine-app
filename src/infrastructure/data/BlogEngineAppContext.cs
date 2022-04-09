@@ -12,16 +12,16 @@ namespace BlogEngineApp.infrastructure.data
 
         public BlogEngineAppContext(DbContextOptions<BlogEngineAppContext> options) : base(options) { }
 
-        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Blog>()
+            modelBuilder.Entity<Post>()
                 .HasIndex(b => b.Status);
 
-            modelBuilder.Entity<Blog>()
+            modelBuilder.Entity<Post>()
                 .Property(b => b.Status)
                 .HasConversion<string>()
                 .HasColumnType("char(20)");

@@ -6,11 +6,11 @@ using BlogEngineApp.core.enums;
 namespace BlogEngineApp.core.interfaces
 {
     /// <summary>
-    /// Blog Repository
+    /// Post Repository
     /// </summary>
-    public interface IBlogRepository : IGenericRepository<Blog>
+    public interface IPostRepository : IGenericRepository<Post>
     {
-        IEnumerable<Blog> FindByBlogStatus(BlogStatus status);
-        IEnumerable<Blog> FindByBlogStatusAndUserId(BlogStatus status, string userId);
+        IEnumerable<Post> FindByPostStatus(PostStatus status);
+        IEnumerable<Post> FindByPostStatusAndUserId(PostStatus status, string userId);
     }
 }

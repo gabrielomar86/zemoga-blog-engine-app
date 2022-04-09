@@ -2,24 +2,27 @@ using System.Collections.Generic;
 using BlogEngineApp.core.entities;
 using BlogEngineApp.core.enums;
 using BlogEngineApp.core.interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogEngineApp.infrastructure.data
 {
-    public class BlogRepository : GenericRepository<Blog>, IBlogRepository
+    public class PostRepository : GenericRepository<Post>, IPostRepository
     {
-        public BlogRepository(BlogEngineAppContext blogEngineAppContext) : base(blogEngineAppContext)
+        public PostRepository(BlogEngineAppContext postEngineAppContext) : base(postEngineAppContext)
         {
 
         }
 
-        public IEnumerable<Blog> FindByBlogStatus(BlogStatus status)
+        public IEnumerable<Post> FindByPostStatus(PostStatus status)
         {
-            return FindByCondition(blog => blog.Status == status);
+            return FindByCondition(post => post.Status == status)
+                .Include(post => post.User);
         }
 
-        public IEnumerable<Blog> FindByBlogStatusAndUserId(BlogStatus status, string userId)
+        public IEnumerable<Post> FindByPostStatusAndUserId(PostStatus status, string userId)
         {
-            return FindByCondition(blog => blog.Status == status && blog.UserId == userId);
+            return FindByCondition(post => post.Status == status && post.UserId == userId)
+                .Include(post => post.User);
         }
     }
 }

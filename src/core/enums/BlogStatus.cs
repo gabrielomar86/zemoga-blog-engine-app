@@ -1,21 +1,29 @@
 namespace BlogEngineApp.core.enums
 {
     /// <summary>
-    /// Enum BlogStatus
+    /// Enum Post Status
     /// </summary>
-    public enum BlogStatus
+    public enum PostStatus
     {
+        /// <summary>
+        /// Create
+        /// </summary>
+        Create = 0,
+        /// <summary>
+        /// Created
+        /// </summary>
+        Created = 1,
         /// <summary>
         /// Pending
         /// </summary>
-        Pending = 1,
+        Pending = 2,
         /// <summary>
         /// Approved
         /// </summary>
-        Approved = 2,
+        Approved = 3,
         /// <summary>
         /// Rejected
         /// </summary>
-        Rejected = 3
+        Rejected = 4
     }
 }

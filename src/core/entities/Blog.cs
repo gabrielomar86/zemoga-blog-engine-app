@@ -6,9 +6,9 @@ using BlogEngineApp.core.enums;
 
 namespace BlogEngineApp.core.entities
 {
-    public class Blog : BaseEntity<Guid>
+    public class Post : BaseEntity<Guid>
     {
-        public Blog()
+        public Post()
         {
             Comments = new HashSet<Comment>();
         }
@@ -21,13 +21,13 @@ namespace BlogEngineApp.core.entities
         [Column(TypeName = "varchar(300)")]
         public string Content { get; set; }
 
-        public BlogStatus Status { get; set; }
+        public PostStatus Status { get; set; }
         public string UserId { get; set; }
         public virtual User User { get; set; }
 
         #region Foreign Keys
 
-        [ForeignKey("BlogId")]
+        [ForeignKey("PostId")]
         public virtual ICollection<Comment> Comments { get; set; }
 
         #endregion

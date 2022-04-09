@@ -5,22 +5,22 @@ namespace BlogEngineApp.infrastructure.data
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private readonly BlogEngineAppContext _blogEngineAppContext;
-        private IBlogRepository _blogRepository;
+        private IPostRepository _postRepository;
 
         public RepositoryWrapper(BlogEngineAppContext blogEngineAppContext)
         {
             _blogEngineAppContext = blogEngineAppContext;
         }
 
-        public IBlogRepository BlobRepository
+        public IPostRepository PostRepository
         {
             get
             {
-                if (_blogRepository == null)
+                if (_postRepository == null)
                 {
-                    _blogRepository = new BlogRepository(_blogEngineAppContext);
+                    _postRepository = new PostRepository(_blogEngineAppContext);
                 }
-                return _blogRepository;
+                return _postRepository;
             }
         }
 

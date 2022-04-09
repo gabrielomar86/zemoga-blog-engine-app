@@ -2,7 +2,7 @@ using System;
 
 namespace BlogEngineApp.core.dto
 {
-    public class BlogDto
+    public class PostDto
     {
 
         public Guid Id { get; set; }

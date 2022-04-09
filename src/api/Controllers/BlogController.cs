@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using BlogEngineApp.core.dto;
+using BlogEngineApp.core.extensions;
 using BlogEngineApp.core.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,32 +8,55 @@ using Microsoft.Extensions.Logging;
 namespace BlogEngineApp.api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class BlogController : ControllerBase
+    [Route("posts")]
+    public class PostController : ControllerBase
     {
-        private readonly IBlogService _blogEngineAppService;
-        private readonly ILogger<BlogController> _logger;
+        private readonly IPostService _postService;
+        private readonly ILogger<PostController> _logger;
+        private readonly ICreationPostFlowNotifier _creationPostFlowNotifier;
 
-        public BlogController(ILogger<BlogController> logger,
-                                IBlogService blogEngineAppService)
+        public PostController(ILogger<PostController> logger,
+                                IPostService postService,
+                                ICreationPostFlowNotifier creationPostFlowNotifier)
         {
+            _creationPostFlowNotifier = creationPostFlowNotifier;
             _logger = logger;
-            _blogEngineAppService = blogEngineAppService;
-            _logger.LogInformation("BlogController created");
+            _postService = postService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] BlogDto blogDto)
+        public IActionResult Create([FromBody] PostDto postDto)
         {
-            return Ok(_blogEngineAppService.Create(blogDto));
+            _creationPostFlowNotifier.CreatePost(postDto);
+            return Created(nameof(Create), postDto);
         }
 
-        [HttpGet]
-        public IActionResult Get() => Ok(_blogEngineAppService.GetAll());
+        [HttpPatch]
+        [Route("{postId}/approve")]
+        public IActionResult Approve(Guid postDto) => Ok(_postService.Approve(postDto));
+
+        [HttpPatch]
+        [Route("{postId}/reject")]
+        public IActionResult Reject(Guid postDto) => Ok(_postService.Reject(postDto));
 
         [HttpGet]
-        [Route("{id}")]
-        public IActionResult Get(Guid id) => Ok(_blogEngineAppService.GetById(id));
+        [Route("{postId}")]
+        public IActionResult Get(Guid postId) => Ok(_postService.GetById(postId));
+
+        [HttpGet]
+        public IActionResult Get() => Ok(_postService.GetAll());
+
+        [HttpGet]
+        [Route("pendings")]
+        public IActionResult GetPendings([FromQuery] string userId) => Ok(_postService.GetAllPending(userId));
+
+        [HttpGet]
+        [Route("approved")]
+        public IActionResult GetApproved([FromQuery] string userId) => Ok(_postService.GetAllApproved(userId));
+
+        [HttpGet]
+        [Route("rejected")]
+        public IActionResult GetRejected([FromQuery] string userId) => Ok(_postService.GetAllRejected(userId));
 
     }
 

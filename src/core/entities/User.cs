@@ -10,7 +10,7 @@ namespace BlogEngineApp.core.entities
     {
         public User()
         {
-            Blogs = new HashSet<Blog>();
+            Posts = new HashSet<Post>();
             Comments = new HashSet<Comment>();
         }
 
@@ -19,9 +19,14 @@ namespace BlogEngineApp.core.entities
         [Column(TypeName = "varchar(100)")]
         public string UserName { get; set; }
 
+
         [Required]
         [Column(TypeName = "varchar(100)")]
         public string Password { get; set; }
+
+        [Required]
+        [Column(TypeName = "varchar(200)")]
+        public string FullName { get; set; }
 
         [Required]
         [Column(TypeName = "char(15)")]
@@ -40,7 +45,7 @@ namespace BlogEngineApp.core.entities
         #region Foreign Keys
 
         [ForeignKey("UserId")]
-        public virtual ICollection<Blog> Blogs { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
 
         [ForeignKey("UserId")]
         public virtual ICollection<Comment> Comments { get; set; }

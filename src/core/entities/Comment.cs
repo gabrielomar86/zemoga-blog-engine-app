@@ -11,8 +11,8 @@ namespace BlogEngineApp.core.entities
         [Column(TypeName = "varchar(300)")]
         public string Detail { get; set; }
 
-        public Guid BlogId { get; set; }
-        public virtual Blog Blog { get; set; }
+        public Guid PostId { get; set; }
+        public virtual Post Blog { get; set; }
 
         public string UserId { get; set; }
         public virtual User User { get; set; }

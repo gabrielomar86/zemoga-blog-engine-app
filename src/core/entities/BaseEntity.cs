@@ -15,7 +15,7 @@ namespace BlogEngineApp.core.entities
         public TKey Id { get; set; }
 
         [Required]
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
 
         [Required]
         [DefaultValue(true)]

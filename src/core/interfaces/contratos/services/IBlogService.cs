@@ -1,18 +1,20 @@
 using System;
 using System.Collections.Generic;
 using BlogEngineApp.core.dto;
+using BlogEngineApp.core.presenter;
 
 namespace BlogEngineApp.core.interfaces
 {
-    public interface IBlogService
+    public interface IPostService
     {
-        BlogDto Create(BlogDto blogDto);
-        BlogDto GetById(Guid id);
-        BlogDto Reject(Guid blogId);
-        BlogDto Approve(Guid blogId);
-        IEnumerable<BlogDto> GetAll(string userId = null);
-        IEnumerable<BlogDto> GetAllPending(string userId = null);
-        IEnumerable<BlogDto> GetAllApproved(string userId = null);
-        IEnumerable<BlogDto> GetAllRejected(string userId = null);
+        PostDto Create(PostDto postDto);
+        PostDto GetById(Guid id);
+        PostDto Pending(Guid postId);
+        PostDto Reject(Guid postId);
+        PostDto Approve(Guid postId);
+        IEnumerable<PostDto> GetAll(string userId = null);
+        IEnumerable<PostPresenter> GetAllPending(string userId = null);
+        IEnumerable<PostDto> GetAllApproved(string userId = null);
+        IEnumerable<PostDto> GetAllRejected(string userId = null);
     }
 }

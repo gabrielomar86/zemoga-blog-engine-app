@@ -5,6 +5,7 @@ using BlogEngineApp.core.entities;
 using BlogEngineApp.core.enums;
 using BlogEngineApp.core.extensions;
 using BlogEngineApp.core.interfaces;
+using BlogEngineApp.core.presenter;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -14,168 +15,229 @@ using Xunit;
 
 namespace BlogEngineApp.services.test
 {
-    public class BlogServiceTest
+    public class PostServiceTest
     {
         private readonly IMapper _mapper;
         private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
+        private readonly Mock<ICreationPostFlowNotifier> _mockCreationPostFlowNotifier;
 
-        public BlogServiceTest()
+        public PostServiceTest()
         {
             _mapper = new MapperConfiguration(opts => { opts.AddProfile(typeof(BlogEngineAppMappingProfile)); }).CreateMapper();
             _mockRepositoryWrapper = new Mock<IRepositoryWrapper>();
+            _mockCreationPostFlowNotifier = new Mock<ICreationPostFlowNotifier>();
         }
 
         [Fact]
-        public void Should_CreateBlog()
+        public void Should_CreatePost()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.Insert(It.IsAny<Blog>()));
+                .Setup(mrw => mrw.PostRepository.Insert(It.IsAny<Post>()));
 
             // Act
-            var resultado = blogEngineAppService.Create(new BlogDto());
+            var resultado = posService.Create(new PostDto());
 
             // Assert
-            Assert.IsType<BlogDto>(resultado);
+            Assert.IsType<PostDto>(resultado);
 
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.Insert(It.IsAny<Blog>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.Insert(It.IsAny<Post>()), Times.Once);
+            _mockCreationPostFlowNotifier
+                .Verify(notifier => notifier.PostCreated(It.IsAny<PostDto>()), Times.Once);
+        }
+
+        [Fact]
+        public void Should_CreatePost_GeneralException()
+        {
+            // Arrange
+            var posService = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.Insert(It.IsAny<Post>()))
+                .Throws<Exception>();
+
+            // Act
+            Assert.Throws<Exception>(() => posService.Create(new PostDto()));
+
+            // Assert
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Insert(It.IsAny<Post>()), Times.Once);
+            _mockCreationPostFlowNotifier
+                .Verify(notifier => notifier.PostCreated(It.IsAny<PostDto>()), Times.Never);
         }
 
         [Fact]
         public void Should_GetById()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
-                .Returns(new Blog());
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(new Post());
 
             // Act
-            var resultado = blogEngineAppService.GetById(It.IsAny<Guid>());
+            var resultado = posService.GetById(It.IsAny<Guid>());
 
             // Assert
-            Assert.IsType<BlogDto>(resultado);
+            Assert.IsType<PostDto>(resultado);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
         }
 
         [Fact]
         public void Should_GetAll_Without_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.GetAll())
+                .Setup(mrw => mrw.PostRepository.GetAll())
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAll();
+            var resultado = posService.GetAll();
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostDto>>(resultado);
             Assert.Equal(4, resultado.Count());
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.GetAll(), Times.Once);
+                .Verify(mrw => mrw.PostRepository.GetAll(), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()), Times.Never);
+                .Verify(mrw => mrw.PostRepository.FindByCondition(It.IsAny<Expression<Func<Post, bool>>>()), Times.Never);
         }
 
         [Fact]
         public void Should_GetAll_With_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.GetAll())
+                .Setup(mrw => mrw.PostRepository.GetAll())
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAll("userId");
+            var resultado = posService.GetAll("userId");
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostDto>>(resultado);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.GetAll(), Times.Never);
+                .Verify(mrw => mrw.PostRepository.GetAll(), Times.Never);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.FindByCondition(It.IsAny<Expression<Func<Post, bool>>>()), Times.Once);
         }
 
         [Fact]
         public void Should_Reject()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
-                .Returns(new Blog());
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(new Post());
 
             // Act
-            var resultado = blogEngineAppService.Reject(It.IsAny<Guid>());
+            var resultado = posService.Reject(It.IsAny<Guid>());
 
             // Assert
-            Assert.IsType<BlogDto>(resultado);
+            Assert.IsType<PostDto>(resultado);
 
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Once);
         }
 
         [Fact]
         public void Should_Reject_NotFound()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<Exception>(() => blogEngineAppService.Reject(It.IsAny<Guid>()));
+            Assert.Throws<Exception>(() => posService.Reject(It.IsAny<Guid>()));
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Never);
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Never);
+        }
+
+        [Fact]
+        public void Should_Pending()
+        {
+            // Arrange
+            var postServiceMock = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(new Post());
+
+            // Act
+            var resultado = postServiceMock.Pending(It.IsAny<Guid>());
+
+            // Assert
+            Assert.IsType<PostDto>(resultado);
+
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Once);
+        }
+
+        [Fact]
+        public void Should_Pending_NotFound()
+        {
+            // Arrange
+            var posService = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(() => null);
+
+            // Act - Assert
+            Assert.Throws<Exception>(() => posService.Pending(It.IsAny<Guid>()));
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Never);
         }
 
         [Fact]
         public void Should_Approve()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
-                .Returns(new Blog());
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(new Post());
 
             // Act
-            var resultado = blogEngineAppService.Approve(It.IsAny<Guid>());
+            var resultado = posService.Approve(It.IsAny<Guid>());
 
             // Assert
-            Assert.IsType<BlogDto>(resultado);
+            Assert.IsType<PostDto>(resultado);
 
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Once);
         }
 
         [Fact]
         public void Should_Approve_NotFound()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<Exception>(() => blogEngineAppService.Approve(It.IsAny<Guid>()));
+            Assert.Throws<Exception>(() => posService.Approve(It.IsAny<Guid>()));
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Never);
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Never);
         }
 
         #region  WITHOUT_USERID
@@ -184,16 +246,16 @@ namespace BlogEngineApp.services.test
         public void Should_GetAllPending_Without_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
+                .Setup(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAllPending();
+            var resultado = posService.GetAllPending();
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
 
             AssertWithoutUserId();
         }
@@ -202,16 +264,16 @@ namespace BlogEngineApp.services.test
         public void Should_GetAllApproved_Without_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
+                .Setup(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAllApproved();
+            var resultado = posService.GetAllApproved();
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostDto>>(resultado);
 
             AssertWithoutUserId();
         }
@@ -220,16 +282,16 @@ namespace BlogEngineApp.services.test
         public void Should_GetAllRejected_Without_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
+                .Setup(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAllRejected();
+            var resultado = posService.GetAllRejected();
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostDto>>(resultado);
 
             AssertWithoutUserId();
         }
@@ -242,17 +304,17 @@ namespace BlogEngineApp.services.test
         public void Should_GetAllPending_With_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Setup(mrw => mrw.PostRepository.FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAllPending("userId");
+            var resultado = posService.GetAllPending("userId");
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
 
             AssertWithUserId();
         }
@@ -261,17 +323,17 @@ namespace BlogEngineApp.services.test
         public void Should_GetAllApproved_With_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Setup(mrw => mrw.PostRepository.FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAllApproved("userId");
+            var resultado = posService.GetAllApproved("userId");
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostDto>>(resultado);
 
             AssertWithUserId();
         }
@@ -280,17 +342,17 @@ namespace BlogEngineApp.services.test
         public void Should_GetAllRejected_With_UserId()
         {
             // Arrange
-            var blogEngineAppService = GetBlogService();
+            var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlobRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Setup(mrw => mrw.PostRepository.FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = blogEngineAppService.GetAllRejected("userId");
+            var resultado = posService.GetAllRejected("userId");
 
             // Assert
-            Assert.IsType<List<BlogDto>>(resultado);
+            Assert.IsType<List<PostDto>>(resultado);
 
             AssertWithUserId();
         }
@@ -299,19 +361,19 @@ namespace BlogEngineApp.services.test
 
         #region Private Methods
 
-        private IBlogService GetBlogService()
+        private IPostService GetPostService()
         {
-            return new BlogService(_mapper, _mockRepositoryWrapper.Object);
+            return new PostService(_mapper, _mockRepositoryWrapper.Object, _mockCreationPostFlowNotifier.Object);
         }
 
-        private static IQueryable<Blog> GetEntitiesQueryable()
+        private static IQueryable<Post> GetEntitiesQueryable()
         {
-            var listado = new List<Blog>
+            var listado = new List<Post>
             {
-                new Blog { Id = Guid.Parse("5ee251fd-14ee-480f-b6d8-da60e1193bf1"), Status = BlogStatus.Approved, UserId = "UserId1" },
-                new Blog { Id = Guid.Parse("ff5ee301-c3ed-4110-896d-7149d5ab1831"), Status = BlogStatus.Pending, UserId = "UserId2" },
-                new Blog { Id = Guid.Parse("1ddc8f74-169a-4bf3-bae4-d215c735b180"), Status = BlogStatus.Pending, UserId = "UserId2.1" },
-                new Blog { Id = Guid.Parse("e0b0c0ec-b39a-4b19-a8d5-93c7398a5407"), Status = BlogStatus.Rejected, UserId = "UserId3" },
+                new Post { Id = Guid.Parse("5ee251fd-14ee-480f-b6d8-da60e1193bf1"), Status = PostStatus.Approved, UserId = "UserId1" },
+                new Post { Id = Guid.Parse("ff5ee301-c3ed-4110-896d-7149d5ab1831"), Status = PostStatus.Pending, UserId = "UserId2" },
+                new Post { Id = Guid.Parse("1ddc8f74-169a-4bf3-bae4-d215c735b180"), Status = PostStatus.Pending, UserId = "UserId2.1" },
+                new Post { Id = Guid.Parse("e0b0c0ec-b39a-4b19-a8d5-93c7398a5407"), Status = PostStatus.Rejected, UserId = "UserId3" },
             };
 
             return listado.AsQueryable();
@@ -320,20 +382,20 @@ namespace BlogEngineApp.services.test
         private void AssertWithUserId()
         {
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()), Times.Never);
+                .Verify(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()), Times.Never);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository
-                                    .FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Verify(mrw => mrw.PostRepository
+                                    .FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
                                                                 It.IsAny<string>()), Times.Once);
         }
 
         private void AssertWithoutUserId()
         {
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlobRepository
-                                    .FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Verify(mrw => mrw.PostRepository
+                                    .FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
                                                                 It.IsAny<string>()), Times.Never);
         }
 
