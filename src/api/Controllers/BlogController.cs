@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BlogEngineApp.core.dto;
 using BlogEngineApp.core.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,12 +22,11 @@ namespace BlogEngineApp.api.Controllers
             _logger.LogInformation("BlogController created");
         }
 
-        // [HttpGet]
-        // [Route("login")]
-        // public async Task<IActionResult> Login()
-        // {
-        //     return Ok();
-        // }
+        [HttpPost]
+        public IActionResult Create([FromBody] BlogDto blogDto)
+        {
+            return Ok(_blogEngineAppService.Create(blogDto));
+        }
 
         [HttpGet]
         public IActionResult Get() => Ok(_blogEngineAppService.GetAll());

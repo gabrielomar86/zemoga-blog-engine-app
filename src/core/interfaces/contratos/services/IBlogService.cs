@@ -6,6 +6,7 @@ namespace BlogEngineApp.core.interfaces
 {
     public interface IBlogService
     {
+        BlogDto Create(BlogDto blogDto);
         BlogDto GetById(Guid id);
         BlogDto Reject(Guid blogId);
         BlogDto Approve(Guid blogId);

@@ -5,7 +5,7 @@ namespace BlogEngineApp.core.interfaces
         /// <summary>
         /// Repository Wrapper
         /// </summary>
-        IBlogRepository BlogEngineAppRepository { get; }
+        IBlogRepository BlobRepository { get; }
 
 
         /// <summary>

@@ -26,12 +26,30 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
+        public void Should_CreateBlog()
+        {
+            // Arrange
+            var blogEngineAppService = GetBlogService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.BlobRepository.Insert(It.IsAny<Blog>()));
+
+            // Act
+            var resultado = blogEngineAppService.Create(new BlogDto());
+
+            // Assert
+            Assert.IsType<BlogDto>(resultado);
+
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.BlobRepository.Insert(It.IsAny<Blog>()), Times.Once);
+        }
+
+        [Fact]
         public void Should_GetById()
         {
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()))
+                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
                 .Returns(new Blog());
 
             // Act
@@ -40,7 +58,7 @@ namespace BlogEngineApp.services.test
             // Assert
             Assert.IsType<BlogDto>(resultado);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
         }
 
         [Fact]
@@ -49,7 +67,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.GetAll())
+                .Setup(mrw => mrw.BlobRepository.GetAll())
                 .Returns(GetEntitiesQueryable());
 
             // Act
@@ -59,9 +77,9 @@ namespace BlogEngineApp.services.test
             Assert.IsType<List<BlogDto>>(resultado);
             Assert.Equal(4, resultado.Count());
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.GetAll(), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.GetAll(), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()), Times.Never);
+                .Verify(mrw => mrw.BlobRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()), Times.Never);
         }
 
         [Fact]
@@ -70,7 +88,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.GetAll())
+                .Setup(mrw => mrw.BlobRepository.GetAll())
                 .Returns(GetEntitiesQueryable());
 
             // Act
@@ -79,9 +97,9 @@ namespace BlogEngineApp.services.test
             // Assert
             Assert.IsType<List<BlogDto>>(resultado);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.GetAll(), Times.Never);
+                .Verify(mrw => mrw.BlobRepository.GetAll(), Times.Never);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()), Times.Once);
         }
 
         [Fact]
@@ -90,7 +108,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()))
+                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
                 .Returns(new Blog());
 
             // Act
@@ -100,9 +118,9 @@ namespace BlogEngineApp.services.test
             Assert.IsType<BlogDto>(resultado);
 
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.Update(It.IsAny<Blog>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Once);
         }
 
         [Fact]
@@ -111,15 +129,15 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()))
+                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
                 .Returns(() => null);
 
             // Act - Assert
             Assert.Throws<Exception>(() => blogEngineAppService.Reject(It.IsAny<Guid>()));
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.Update(It.IsAny<Blog>()), Times.Never);
+                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Never);
         }
 
         [Fact]
@@ -128,7 +146,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()))
+                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
                 .Returns(new Blog());
 
             // Act
@@ -138,9 +156,9 @@ namespace BlogEngineApp.services.test
             Assert.IsType<BlogDto>(resultado);
 
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.Update(It.IsAny<Blog>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Once);
         }
 
         [Fact]
@@ -149,15 +167,15 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()))
+                .Setup(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()))
                 .Returns(() => null);
 
             // Act - Assert
             Assert.Throws<Exception>(() => blogEngineAppService.Approve(It.IsAny<Guid>()));
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.GetById(It.IsAny<Guid>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.Update(It.IsAny<Blog>()), Times.Never);
+                .Verify(mrw => mrw.BlobRepository.Update(It.IsAny<Blog>()), Times.Never);
         }
 
         #region  WITHOUT_USERID
@@ -168,7 +186,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
+                .Setup(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
@@ -186,7 +204,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
+                .Setup(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
@@ -204,7 +222,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
+                .Setup(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
@@ -226,7 +244,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Setup(mrw => mrw.BlobRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
@@ -245,7 +263,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Setup(mrw => mrw.BlobRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
@@ -264,7 +282,7 @@ namespace BlogEngineApp.services.test
             // Arrange
             var blogEngineAppService = GetBlogService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.BlogEngineAppRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
+                .Setup(mrw => mrw.BlobRepository.FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
@@ -302,9 +320,9 @@ namespace BlogEngineApp.services.test
         private void AssertWithUserId()
         {
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.FindByBlogStatus(It.IsAny<BlogStatus>()), Times.Never);
+                .Verify(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()), Times.Never);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository
+                .Verify(mrw => mrw.BlobRepository
                                     .FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
                                                                 It.IsAny<string>()), Times.Once);
         }
@@ -312,9 +330,9 @@ namespace BlogEngineApp.services.test
         private void AssertWithoutUserId()
         {
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository.FindByBlogStatus(It.IsAny<BlogStatus>()), Times.Once);
+                .Verify(mrw => mrw.BlobRepository.FindByBlogStatus(It.IsAny<BlogStatus>()), Times.Once);
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.BlogEngineAppRepository
+                .Verify(mrw => mrw.BlobRepository
                                     .FindByBlogStatusAndUserId(It.IsAny<BlogStatus>(),
                                                                 It.IsAny<string>()), Times.Never);
         }

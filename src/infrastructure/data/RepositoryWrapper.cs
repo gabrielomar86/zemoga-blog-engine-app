@@ -12,7 +12,7 @@ namespace BlogEngineApp.infrastructure.data
             _blogEngineAppContext = blogEngineAppContext;
         }
 
-        public IBlogRepository BlogEngineAppRepository
+        public IBlogRepository BlobRepository
         {
             get
             {
