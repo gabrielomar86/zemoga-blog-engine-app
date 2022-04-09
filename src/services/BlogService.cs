@@ -1,9 +1,9 @@
 using BlogEngineApp.core.dto;
 using BlogEngineApp.core.interfaces;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using AutoMapper;
+using BlogEngineApp.core.enums;
 
 namespace BlogEngineApp.services
 {
@@ -23,16 +23,55 @@ namespace BlogEngineApp.services
         {
             var entity = _repositoryWrapper
                 .BlogEngineAppRepository
-                .FindByCondition(smp => smp.Id == id)
-                .FirstOrDefault();
+                .GetById(id);
+
             return _mapper.Map<BlogDto>(entity);
         }
 
-        public List<BlogDto> GetAll()
+        public IEnumerable<BlogDto> GetAll()
         {
             var entities = _repositoryWrapper.BlogEngineAppRepository.GetAll();
             return _mapper.Map<List<BlogDto>>(entities);
         }
 
+        public IEnumerable<BlogDto> GetAllPending()
+        {
+            var entities = _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatus(BlogStatus.Pending);
+            return _mapper.Map<List<BlogDto>>(entities);
+        }
+
+        public IEnumerable<BlogDto> GetAllApproved()
+        {
+            var entities = _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatus(BlogStatus.Approved);
+            return _mapper.Map<List<BlogDto>>(entities);
+        }
+
+        public IEnumerable<BlogDto> GetAllRejected()
+        {
+            var entities = _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatus(BlogStatus.Rejected);
+            return _mapper.Map<List<BlogDto>>(entities);
+        }
+
+        public BlogDto Reject(Guid blogId)
+        {
+            return UpdateStatus(blogId, BlogStatus.Rejected);
+        }
+
+        public BlogDto Approve(Guid blogId)
+        {
+            return UpdateStatus(blogId, BlogStatus.Approved);
+        }
+
+        private BlogDto UpdateStatus(Guid blogId, BlogStatus status)
+        {
+            var blog = _repositoryWrapper.BlogEngineAppRepository.GetById(blogId);
+
+            if (blog == null)
+                throw new Exception("Blog not found");
+
+            blog.Status = status;
+            _repositoryWrapper.BlogEngineAppRepository.Update(blog);
+            return _mapper.Map<BlogDto>(blog);
+        }
     }
 }

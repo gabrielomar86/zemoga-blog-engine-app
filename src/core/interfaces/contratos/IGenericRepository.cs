@@ -11,6 +11,12 @@ namespace BlogEngineApp.core.interfaces
     public interface IGenericRepository<TEntity>
     {
         /// <summary>
+        /// Returns entity by id
+        /// </summary>
+        /// <returns>Returns entity by id</returns>
+        TEntity GetById(Guid id);
+
+        /// <summary>
         /// Returns entity collection
         /// </summary>
         /// <returns>Returns entity collection</returns>

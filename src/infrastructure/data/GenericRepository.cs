@@ -41,5 +41,10 @@ namespace BlogEngineApp.infrastructure.data
         {
             return _blogEngineAppContext.Set<TEntity>().AsNoTracking();
         }
+
+        public TEntity GetById(Guid id)
+        {
+            return _blogEngineAppContext.Set<TEntity>().Find(id);
+        }
     }
 }

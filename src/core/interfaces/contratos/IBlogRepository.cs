@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BlogEngineApp.core.entities;
 using BlogEngineApp.core.enums;
@@ -9,6 +10,6 @@ namespace BlogEngineApp.core.interfaces
     /// </summary>
     public interface IBlogRepository : IGenericRepository<Blog>
     {
-        IEnumerable<Blog> FindByStatus(BlogStatus status);
+        IEnumerable<Blog> FindByBlogStatus(BlogStatus status);
     }
 }

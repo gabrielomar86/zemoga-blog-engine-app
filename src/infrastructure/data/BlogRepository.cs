@@ -12,9 +12,10 @@ namespace BlogEngineApp.infrastructure.data
 
         }
 
-        public IEnumerable<Blog> FindByStatus(BlogStatus status)
+        public IEnumerable<Blog> FindByBlogStatus(BlogStatus status)
         {
-            throw new System.NotImplementedException();
+            return FindByCondition(blog => blog.Status == status);
         }
+
     }
 }

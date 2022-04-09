@@ -14,7 +14,7 @@ namespace BlogEngineApp.api.Controllers
         private readonly ILogger<BlogController> _logger;
 
         public BlogController(ILogger<BlogController> logger,
-                              IBlogService blogEngineAppService)
+                                IBlogService blogEngineAppService)
         {
             _logger = logger;
             _blogEngineAppService = blogEngineAppService;

@@ -21,7 +21,6 @@ namespace BlogEngineApp.core.entities
         [Column(TypeName = "varchar(300)")]
         public string Content { get; set; }
 
-        [Column(TypeName = "char(20)")]
         public BlogStatus Status { get; set; }
         public string UserId { get; set; }
         public virtual User User { get; set; }

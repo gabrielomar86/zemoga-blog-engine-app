@@ -1,4 +1,5 @@
 using BlogEngineApp.core.entities;
+using BlogEngineApp.core.enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -19,6 +20,16 @@ namespace BlogEngineApp.infrastructure.data
         {
             modelBuilder.Entity<Blog>()
                 .HasIndex(b => b.Status);
+
+            modelBuilder.Entity<Blog>()
+                .Property(b => b.Status)
+                .HasConversion<string>()
+                .HasColumnType("char(20)");
+
+            modelBuilder.Entity<User>()
+                .Property(b => b.Role)
+                .HasConversion<string>()
+                .HasColumnType("char(20)");
 
             LoadInitialData(modelBuilder);
         }

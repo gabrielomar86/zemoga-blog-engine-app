@@ -8,7 +8,12 @@ namespace BlogEngineApp.core.extensions
     {
         public BlogEngineAppMappingProfile()
         {
-            CreateMap<Blog, BlogDto>();
+            CreateMap<Blog, BlogDto>()
+                .ReverseMap();
+            CreateMap<Comment, CommentDto>()
+                .ReverseMap();
+            CreateMap<User, UserDto>()
+                .ReverseMap();
         }
     }
 }

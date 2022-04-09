@@ -29,12 +29,12 @@ namespace BlogEngineApp.core.entities
 
         public bool IsWriter()
         {
-            return Role.Equals("writer");
+            return Role == Roles.Writer;
         }
 
         public bool IsEditor()
         {
-            return Role.Equals("editor");
+            return Role == Roles.Editor;
         }
 
         #region Foreign Keys
