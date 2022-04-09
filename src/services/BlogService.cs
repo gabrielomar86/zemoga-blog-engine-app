@@ -1,6 +1,5 @@
 using BlogEngineApp.core.dto;
-using BlogEngineApp.core.interfaces.contratos;
-using BlogEngineApp.core.interfaces.contratos.servicios;
+using BlogEngineApp.core.interfaces;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -8,12 +7,12 @@ using AutoMapper;
 
 namespace BlogEngineApp.services
 {
-    public class BlogServicio : IBlogService
+    public class BlogService : IBlogService
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryWrapper _repositoryWrapper;
 
-        public BlogServicio(IMapper mapper,
+        public BlogService(IMapper mapper,
                             IRepositoryWrapper repositoryWrapper)
         {
             _mapper = mapper;

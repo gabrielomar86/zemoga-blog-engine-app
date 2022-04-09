@@ -52,7 +52,7 @@ namespace BlogEngineApp.infrastructure.data
 
         private static void LoadInitialData(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new BlogSeed());
+            modelBuilder.ApplyConfiguration(new UserSeed());
         }
 
     }

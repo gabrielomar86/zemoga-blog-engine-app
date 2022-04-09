@@ -1,9 +1,9 @@
-namespace BlogEngineApp.core.interfaces.contratos
+namespace BlogEngineApp.core.interfaces
 {
     public interface IRepositoryWrapper
     {
         /// <summary>
-        /// NDeveloper Sample Repositorio
+        /// Repository Wrapper
         /// </summary>
         IBlogRepository BlogEngineAppRepository { get; }
 

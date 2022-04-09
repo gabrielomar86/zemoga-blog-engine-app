@@ -2,43 +2,43 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace BlogEngineApp.core.interfaces.contratos
+namespace BlogEngineApp.core.interfaces
 {
     /// <summary>
-    /// Repositorio Genérico
+    /// Generic Repository
     /// </summary>
-    /// <typeparam name="TEntidad"></typeparam>
-    public interface IGenericRepository<TEntidad>
+    /// <typeparam name="TEntity"></typeparam>
+    public interface IGenericRepository<TEntity>
     {
         /// <summary>
-        /// Método que permite el retorno de una colección de la entidad
+        /// Returns entity collection
         /// </summary>
-        /// <returns>Retorna todos los elementos de tipo entidad</returns>
-        IQueryable<TEntidad> GetAll();
+        /// <returns>Returns entity collection</returns>
+        IQueryable<TEntity> GetAll();
 
         /// <summary>
-        /// Método que permimte obtener un filtrado según la expresión ingresada
+        /// Returns a filtered entity
         /// </summary>
-        /// <param name="expresion">Expresión para el filtrado de la información</param>
-        /// <returns>Obtiene informacón filtrada según la expresión ingresada</returns>
-        IQueryable<TEntidad> FindByCondition(Expression<Func<TEntidad, bool>> expresion);
+        /// <param name="expresion">filter expression</param>
+        /// <returns>Returns a filtered entity</returns>
+        IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expresion);
 
         /// <summary>
-        /// Método que permite la inserción de un registro
+        /// Insert a entity
         /// </summary>
-        /// <param name="entidad">Entidad</param>
-        void Insert(TEntidad entidad);
+        /// <param name="entity">Entity</param>
+        void Insert(TEntity entity);
 
         /// <summary>
-        /// Método que permite la modificación de un registro
+        /// Update entity
         /// </summary>
-        /// <param name="entidad">Entidad</param>
-        void Update(TEntidad entidad);
+        /// <param name="entity">Entity</param>
+        void Update(TEntity entity);
 
         /// <summary>
-        /// Método que permite la eliminación de un registro
+        /// Delete Entity
         /// </summary>
-        /// <param name="entidad">Entidad</param>
-        void Delete(TEntidad entidad);
+        /// <param name="entity">Entity</param>
+        void Delete(TEntity entity);
     }
 }

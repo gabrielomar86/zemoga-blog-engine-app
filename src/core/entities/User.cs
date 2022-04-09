@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BlogEngineApp.core.enums;
 
 namespace BlogEngineApp.core.entities
 {
@@ -23,8 +24,8 @@ namespace BlogEngineApp.core.entities
         public string Password { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(20)")]
-        public string Role { get; set; }
+        [Column(TypeName = "char(15)")]
+        public Roles Role { get; set; }
 
         public bool IsWriter()
         {

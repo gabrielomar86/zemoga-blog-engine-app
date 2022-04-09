@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using BlogEngineApp.core.entities;
 using BlogEngineApp.core.enums;
-using BlogEngineApp.core.interfaces.contratos;
+using BlogEngineApp.core.interfaces;
 
 namespace BlogEngineApp.infrastructure.data
 {

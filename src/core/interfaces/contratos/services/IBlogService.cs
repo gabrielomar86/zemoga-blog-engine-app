@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using BlogEngineApp.core.dto;
 
-namespace BlogEngineApp.core.interfaces.contratos.servicios
+namespace BlogEngineApp.core.interfaces
 {
     public interface IBlogService
     {

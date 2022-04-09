@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using BlogEngineApp.core.entities;
 using BlogEngineApp.core.enums;
 
-namespace BlogEngineApp.core.interfaces.contratos
+namespace BlogEngineApp.core.interfaces
 {
     /// <summary>
     /// Blog Repository

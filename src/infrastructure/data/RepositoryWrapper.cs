@@ -1,4 +1,4 @@
-using BlogEngineApp.core.interfaces.contratos;
+using BlogEngineApp.core.interfaces;
 
 namespace BlogEngineApp.infrastructure.data
 {

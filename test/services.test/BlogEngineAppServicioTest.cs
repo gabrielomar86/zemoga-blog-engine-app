@@ -2,9 +2,8 @@
 using AutoMapper;
 using BlogEngineApp.core.dto;
 using BlogEngineApp.core.entities;
-using BlogEngineApp.core.extensiones;
-using BlogEngineApp.core.interfaces.contratos;
-using BlogEngineApp.core.interfaces.contratos.servicios;
+using BlogEngineApp.core.extensions;
+using BlogEngineApp.core.interfaces;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -14,62 +13,62 @@ using Xunit;
 
 namespace BlogEngineApp.services.test
 {
-    public class BlogEngineAppServicioTest
+    public class BlogServiceTest
     {
         private readonly IMapper _mapper;
-        private readonly Mock<IRepositoryWrapper> _mockRepositorioWrapper;
+        private readonly Mock<IRepositoryWrapper> _mockRepositoryWrapper;
 
-        public BlogEngineAppServicioTest()
+        public BlogServiceTest()
         {
             _mapper = new MapperConfiguration(opts => { opts.AddProfile(typeof(BlogEngineAppMappingProfile)); }).CreateMapper();
-            _mockRepositorioWrapper = new Mock<IRepositoryWrapper>();
+            _mockRepositoryWrapper = new Mock<IRepositoryWrapper>();
         }
 
         [Fact]
-        public void Should_ObtenerPorId()
+        public void Should_GetById()
         {
             // Arrange
-            var BlogEngineAppServicio = ObtenerBlogEngineAppServicio();
-            _mockRepositorioWrapper
+            var blogEngineAppService = GetBlogService();
+            _mockRepositoryWrapper
                 .Setup(mrw => mrw.BlogEngineAppRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()))
-                .Returns(ObtenerEntidadesQueryable());
+                .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = BlogEngineAppServicio.GetById(It.IsAny<Guid>());
+            var resultado = blogEngineAppService.GetById(It.IsAny<Guid>());
 
             // Assert
             Assert.IsType<BlogDto>(resultado);
-            _mockRepositorioWrapper
+            _mockRepositoryWrapper
                 .Verify(mrw => mrw.BlogEngineAppRepository.FindByCondition(It.IsAny<Expression<Func<Blog, bool>>>()), Times.Once);
         }
 
         [Fact]
-        public void Should_ObtenerTodos()
+        public void Should_GetAll()
         {
             // Arrange
-            var BlogEngineAppServicio = ObtenerBlogEngineAppServicio();
-            _mockRepositorioWrapper
+            var blogEngineAppService = GetBlogService();
+            _mockRepositoryWrapper
                 .Setup(mrw => mrw.BlogEngineAppRepository.GetAll())
-                .Returns(ObtenerEntidadesQueryable());
+                .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = BlogEngineAppServicio.GetAll();
+            var resultado = blogEngineAppService.GetAll();
 
             // Assert
             Assert.IsType<List<BlogDto>>(resultado);
             Assert.Single(resultado);
-            _mockRepositorioWrapper
+            _mockRepositoryWrapper
                 .Verify(mrw => mrw.BlogEngineAppRepository.GetAll(), Times.Once);
         }
 
         #region Private Methods
 
-        private IBlogService ObtenerBlogEngineAppServicio()
+        private IBlogService GetBlogService()
         {
-            return new BlogServicio(_mapper, _mockRepositorioWrapper.Object);
+            return new BlogService(_mapper, _mockRepositoryWrapper.Object);
         }
 
-        private IQueryable<Blog> ObtenerEntidadesQueryable()
+        private static IQueryable<Blog> GetEntitiesQueryable()
         {
             var listado = new List<Blog>
             {

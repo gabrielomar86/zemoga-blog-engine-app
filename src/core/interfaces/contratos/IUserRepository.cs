@@ -1,9 +1,9 @@
 using BlogEngineApp.core.entities;
 
-namespace BlogEngineApp.core.interfaces.contratos
+namespace BlogEngineApp.core.interfaces
 {
     /// <summary>
-    /// Usuario Blog
+    /// User Blog
     /// </summary>
     public interface IUserRepository : IGenericRepository<User>
     {

@@ -1,4 +1,4 @@
-﻿using BlogEngineApp.core.interfaces.contratos.servicios;
+﻿using BlogEngineApp.core.interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogEngineApp.services
@@ -7,7 +7,7 @@ namespace BlogEngineApp.services
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IBlogService, BlogServicio>();
+            services.AddScoped<IBlogService, BlogService>();
 
             return services;
         }

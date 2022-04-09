@@ -1,4 +1,4 @@
-﻿using BlogEngineApp.core.extensiones;
+﻿using BlogEngineApp.core.extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogEngineApp.core

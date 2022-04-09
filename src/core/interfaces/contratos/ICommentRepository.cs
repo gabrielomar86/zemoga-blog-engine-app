@@ -1,9 +1,9 @@
 using BlogEngineApp.core.entities;
 
-namespace BlogEngineApp.core.interfaces.contratos
+namespace BlogEngineApp.core.interfaces
 {
     /// <summary>
-    /// Comentario Blog
+    /// Blog Comments Repository
     /// </summary>
     public interface ICommentRepository : IGenericRepository<Comment>
     {

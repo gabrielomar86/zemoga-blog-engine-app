@@ -37,9 +37,9 @@ namespace BlogEngineApp.api
 
             services.AddHealthChecks();
 
-            // Adicionar todas las referencias de los servicios
+            // Adding references of every services
             services.AddCore();
-            services.AddInfraestructura(connectionString: Configuration.GetConnectionString("DefaultConnection"));
+            services.AddInfrastructure(connectionString: Configuration.GetConnectionString("DefaultConnection"));
             services.AddServices();
 
             services.AddSwaggerGen(c =>

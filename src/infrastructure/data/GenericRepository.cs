@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using BlogEngineApp.core.interfaces.contratos;
+using BlogEngineApp.core.interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogEngineApp.infrastructure.data
 {
-    public class GenericRepository<TEntidad> : IGenericRepository<TEntidad> where TEntidad : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         protected readonly BlogEngineAppContext _blogEngineAppContext;
 
@@ -15,31 +15,31 @@ namespace BlogEngineApp.infrastructure.data
             _blogEngineAppContext = blogEngineAppContext;
         }
 
-        public void Update(TEntidad entidad)
+        public void Update(TEntity entity)
         {
-            _blogEngineAppContext.Set<TEntidad>().Update(entidad);
+            _blogEngineAppContext.Set<TEntity>().Update(entity);
             _blogEngineAppContext.SaveChanges();
         }
 
-        public IQueryable<TEntidad> FindByCondition(Expression<Func<TEntidad, bool>> expresion)
+        public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expresion)
         {
-            return _blogEngineAppContext.Set<TEntidad>().Where(expresion).AsNoTracking();
+            return _blogEngineAppContext.Set<TEntity>().Where(expresion).AsNoTracking();
         }
 
-        public void Delete(TEntidad entidad)
+        public void Delete(TEntity entity)
         {
-            _blogEngineAppContext.Set<TEntidad>().Remove(entidad);
+            _blogEngineAppContext.Set<TEntity>().Remove(entity);
         }
 
-        public void Insert(TEntidad entidad)
+        public void Insert(TEntity entity)
         {
-            _blogEngineAppContext.Set<TEntidad>().Add(entidad);
+            _blogEngineAppContext.Set<TEntity>().Add(entity);
             _blogEngineAppContext.SaveChanges();
         }
 
-        public IQueryable<TEntidad> GetAll()
+        public IQueryable<TEntity> GetAll()
         {
-            return _blogEngineAppContext.Set<TEntidad>().AsNoTracking();
+            return _blogEngineAppContext.Set<TEntity>().AsNoTracking();
         }
     }
 }
