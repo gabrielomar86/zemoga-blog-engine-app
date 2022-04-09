@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace core.models
 {
@@ -18,7 +18,7 @@ namespace core.models
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return JsonSerializer.Serialize(this, null, new JsonSerializerOptions { IgnoreNullValues = true });
         }
 
         public ErrorDetail RemoveDetail()

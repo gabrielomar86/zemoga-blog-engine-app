@@ -33,11 +33,11 @@ namespace BlogEngineApp.api.Controllers
 
         [HttpPatch]
         [Route("{postId}/approve")]
-        public IActionResult Approve(Guid postDto) => Ok(_postService.Approve(postDto));
+        public IActionResult Approve(Guid postId) => Ok(_postService.Approve(postId));
 
         [HttpPatch]
         [Route("{postId}/reject")]
-        public IActionResult Reject(Guid postDto) => Ok(_postService.Reject(postDto));
+        public IActionResult Reject(Guid postId) => Ok(_postService.Reject(postId));
 
         [HttpGet]
         [Route("{postId}")]

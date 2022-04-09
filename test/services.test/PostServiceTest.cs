@@ -158,7 +158,7 @@ namespace BlogEngineApp.services.test
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<NotFoundResponseException>(() => posService.Reject(It.IsAny<Guid>()));
+            var abc = Assert.Throws<NotFoundResponseException>(() => posService.Reject(It.IsAny<Guid>()));
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper

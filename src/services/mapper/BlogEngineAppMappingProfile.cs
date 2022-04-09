@@ -3,7 +3,7 @@ using BlogEngineApp.core.dto;
 using BlogEngineApp.core.entities;
 using BlogEngineApp.core.presenter;
 
-namespace BlogEngineApp.core.extensions
+namespace BlogEngineApp.services
 {
     public class BlogEngineAppMappingProfile : Profile
     {

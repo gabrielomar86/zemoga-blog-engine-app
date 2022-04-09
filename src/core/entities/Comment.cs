@@ -12,7 +12,7 @@ namespace BlogEngineApp.core.entities
         public string Detail { get; set; }
 
         public Guid PostId { get; set; }
-        public virtual Post Blog { get; set; }
+        public virtual Post Post { get; set; }
 
         public string UserId { get; set; }
         public virtual User User { get; set; }

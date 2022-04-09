@@ -14,6 +14,9 @@ namespace BlogEngineApp.services
             services.AddMediatR(typeof(CreationPostFlowHandler).Assembly);
             services.AddTransient<ICreationPostFlowNotifier, CreationPostFlowNotifier>();
 
+            //Enable AutoMapper
+            services.AddAutoMapper(typeof(BlogEngineAppMappingProfile));
+
             services.AddScoped<IPostService, PostService>();
 
             return services;
