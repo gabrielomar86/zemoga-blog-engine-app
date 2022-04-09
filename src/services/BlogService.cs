@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using AutoMapper;
 using BlogEngineApp.core.enums;
+using BlogEngineApp.core.entities;
 
 namespace BlogEngineApp.services
 {
@@ -28,28 +29,37 @@ namespace BlogEngineApp.services
             return _mapper.Map<BlogDto>(entity);
         }
 
-        public IEnumerable<BlogDto> GetAll()
+        public IEnumerable<BlogDto> GetAll(string userId = null)
         {
-            var entities = _repositoryWrapper.BlogEngineAppRepository.GetAll();
-            return _mapper.Map<List<BlogDto>>(entities);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return _mapper.Map<List<BlogDto>>(
+                    _repositoryWrapper
+                        .BlogEngineAppRepository
+                        .GetAll()
+                );
+            }
+
+            return _mapper.Map<List<BlogDto>>(
+                _repositoryWrapper
+                    .BlogEngineAppRepository
+                    .FindByCondition(x => x.UserId == userId)
+            );
         }
 
-        public IEnumerable<BlogDto> GetAllPending()
+        public IEnumerable<BlogDto> GetAllPending(string userId = null)
         {
-            var entities = _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatus(BlogStatus.Pending);
-            return _mapper.Map<List<BlogDto>>(entities);
+            return _mapper.Map<List<BlogDto>>(GetBlogsByStatusAndUserId(BlogStatus.Pending, userId));
         }
 
-        public IEnumerable<BlogDto> GetAllApproved()
+        public IEnumerable<BlogDto> GetAllApproved(string userId = null)
         {
-            var entities = _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatus(BlogStatus.Approved);
-            return _mapper.Map<List<BlogDto>>(entities);
+            return _mapper.Map<List<BlogDto>>(GetBlogsByStatusAndUserId(BlogStatus.Approved, userId));
         }
 
-        public IEnumerable<BlogDto> GetAllRejected()
+        public IEnumerable<BlogDto> GetAllRejected(string userId = null)
         {
-            var entities = _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatus(BlogStatus.Rejected);
-            return _mapper.Map<List<BlogDto>>(entities);
+            return _mapper.Map<List<BlogDto>>(GetBlogsByStatusAndUserId(BlogStatus.Rejected, userId));
         }
 
         public BlogDto Reject(Guid blogId)
@@ -72,6 +82,14 @@ namespace BlogEngineApp.services
             blog.Status = status;
             _repositoryWrapper.BlogEngineAppRepository.Update(blog);
             return _mapper.Map<BlogDto>(blog);
+        }
+
+        private IEnumerable<Blog> GetBlogsByStatusAndUserId(BlogStatus status, string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+                return _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatus(status);
+
+            return _repositoryWrapper.BlogEngineAppRepository.FindByBlogStatusAndUserId(status, userId);
         }
     }
 }

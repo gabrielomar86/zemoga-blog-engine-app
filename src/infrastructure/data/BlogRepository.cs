@@ -17,5 +17,9 @@ namespace BlogEngineApp.infrastructure.data
             return FindByCondition(blog => blog.Status == status);
         }
 
+        public IEnumerable<Blog> FindByBlogStatusAndUserId(BlogStatus status, string userId)
+        {
+            return FindByCondition(blog => blog.Status == status && blog.UserId == userId);
+        }
     }
 }

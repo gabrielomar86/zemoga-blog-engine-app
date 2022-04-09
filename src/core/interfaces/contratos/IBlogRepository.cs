@@ -11,5 +11,6 @@ namespace BlogEngineApp.core.interfaces
     public interface IBlogRepository : IGenericRepository<Blog>
     {
         IEnumerable<Blog> FindByBlogStatus(BlogStatus status);
+        IEnumerable<Blog> FindByBlogStatusAndUserId(BlogStatus status, string userId);
     }
 }
