@@ -1,7 +1,9 @@
 ﻿using BlogEngineApp.core.extensions;
 using BlogEngineApp.core.interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using services.middleware;
 
 namespace BlogEngineApp.services
 {
@@ -15,6 +17,11 @@ namespace BlogEngineApp.services
             services.AddScoped<IPostService, PostService>();
 
             return services;
+        }
+
+        public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<ExceptionMiddleware>();
         }
     }
 }

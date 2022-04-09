@@ -7,6 +7,7 @@ using BlogEngineApp.core.enums;
 using BlogEngineApp.core.entities;
 using BlogEngineApp.core.extensions;
 using BlogEngineApp.core.presenter;
+using BlogEngineApp.core;
 
 namespace BlogEngineApp.services
 {
@@ -100,7 +101,7 @@ namespace BlogEngineApp.services
             var post = _repositoryWrapper.PostRepository.GetById(postId);
 
             if (post == null)
-                throw new Exception("Post not found");
+                throw new NotFoundResponseException("Post not found");
 
             post.Status = status;
             _repositoryWrapper.PostRepository.Update(post);

@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using BlogEngineApp.core;
 using BlogEngineApp.core.dto;
 using BlogEngineApp.core.entities;
 using BlogEngineApp.core.enums;
@@ -157,7 +158,7 @@ namespace BlogEngineApp.services.test
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<Exception>(() => posService.Reject(It.IsAny<Guid>()));
+            Assert.Throws<NotFoundResponseException>(() => posService.Reject(It.IsAny<Guid>()));
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
@@ -195,7 +196,7 @@ namespace BlogEngineApp.services.test
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<Exception>(() => posService.Pending(It.IsAny<Guid>()));
+            Assert.Throws<NotFoundResponseException>(() => posService.Pending(It.IsAny<Guid>()));
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
@@ -233,7 +234,7 @@ namespace BlogEngineApp.services.test
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<Exception>(() => posService.Approve(It.IsAny<Guid>()));
+            Assert.Throws<NotFoundResponseException>(() => posService.Approve(It.IsAny<Guid>()));
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
