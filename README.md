@@ -1,5 +1,12 @@
 # Instrucciones
 
+Primer dia 12 Horas
+
+Usuarios:
+  
+  **username:** gtarapues **password:** write*123
+  
+  **username:** orodriguez **password:** editor*123
 ## Instalar Plantilla **nDev-webapi**
 
 * Para instalar la plantilla **nDev-webapi** se debe realizar lo siguiente:

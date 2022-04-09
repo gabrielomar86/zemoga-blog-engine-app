@@ -13,15 +13,15 @@ namespace BlogEngineApp.infrastructure.data
             builder.HasData(
                 new User
                 {
-                    UserName = "writer",
-                    Password = StringUtil.GetMd5Hash("writer"),
+                    UserName = "gtarapues",
+                    Password = StringUtil.GetMd5Hash("writer*123"),
                     FullName = "Gabriel Tarapues",
                     Role = Roles.Writer
                 },
                 new User
                 {
-                    UserName = "editor",
-                    Password = StringUtil.GetMd5Hash("editor"),
+                    UserName = "orodriguez",
+                    Password = StringUtil.GetMd5Hash("editor*123"),
                     FullName = "Omar Rodriguez",
                     Role = Roles.Editor
                 }
