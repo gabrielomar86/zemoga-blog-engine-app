@@ -24,6 +24,13 @@ namespace BlogEngineApp.api.Controllers
             _postService = postService;
         }
 
+        [HttpGet]
+        [Route("example")]
+        public IActionResult Example()
+        {
+            return Ok("Hello World!");
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody] PostDto postDto)
         {
