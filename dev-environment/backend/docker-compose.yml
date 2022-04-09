@@ -1,0 +1,58 @@
+version: "3.5"
+
+services:
+  dev-environment:
+    container_name: dev-environment
+    build:
+      context: .
+      dockerfile: ./Dockerfile.Net
+    restart: on-failure
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../../src:/home
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development      
+    networks:
+      - run
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1'
+    #       memory: 512M
+    #     reservations:
+    #       devices:
+    #         - capabilities: [gpu]
+
+  dev-environment-test-services:
+    container_name: dev-environment-test-services
+    build:
+      context: .
+      dockerfile: ./Dockerfile.Net
+    restart: on-failure
+    stdin_open: true
+    tty: true
+    volumes:
+      - ../../.:/home
+    depends_on:
+      - dev-environment
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development      
+    networks:
+      - test
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1'
+    #       memory: 512M
+    #     reservations:
+    #       devices:
+    #         - capabilities: [gpu]
+networks:
+  run:
+    name: run
+  test:
+    name: test

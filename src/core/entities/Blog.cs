@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using BlogEngineApp.core.enums;
+
+namespace BlogEngineApp.core.entities
+{
+    public class Blog : BaseEntity<Guid>
+    {
+        public Blog()
+        {
+            Comments = new HashSet<Comment>();
+        }
+
+        [Required]
+        [Column(TypeName = "varchar(100)")]
+        public string Title { get; set; }
+
+        [Required]
+        [Column(TypeName = "varchar(300)")]
+        public string Content { get; set; }
+
+        [Column(TypeName = "char(20)")]
+        public BlogStatus Status { get; set; }
+        public string UserId { get; set; }
+        public virtual User User { get; set; }
+
+        #region Foreign Keys
+
+        [ForeignKey("BlogId")]
+        public virtual ICollection<Comment> Comments { get; set; }
+
+        #endregion
+
+    }
+}

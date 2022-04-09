@@ -1,0 +1,6 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /home
+
+RUN dotnet dev-certs https
+
+CMD ["/bin/bash"]

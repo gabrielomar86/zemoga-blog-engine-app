@@ -1,0 +1,61 @@
+stages:
+  - test
+  - build
+  - package
+  - deploy
+  - deploy-k8s
+
+################################################################################################
+# nDevRunner hace referencia al tag con el cual el runner fue creado.
+################################################################################################
+
+################################################################################################
+####################################### GLOBAL TESTS ###########################################
+################################################################################################
+test-backend:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:5.0
+  script:
+    - dotnet test
+  tags:
+    - nDevRunner
+######################################### PACKAGE ##############################################
+docker-build-backend-staging:
+  stage: package
+  image: docker:stable
+  services:
+    - docker:stable-dind
+  script:
+    - docker login -u ${REGISTRY_USERNAME} -p "${REGISTRY_PASSWORD}"
+    - docker build -t ${REGISTRY_SERVER}/blogengineapp:latest ./src -f ./ci-cd/docker/Dockerfile
+    - docker push ${REGISTRY_SERVER}/blogengineapp:latest
+  needs:
+    - job: test-backend
+  only:
+    - master
+  tags:
+    - nDevRunner    
+######################################### DEPLOY ###############################################
+##################################### DOCKER-COMPOSE ###########################################
+deploy-docker-compose:
+  stage: deploy
+  script:
+    - echo "Building deploy package"
+    - docker-compose up --build -d
+  needs:
+    - job: docker-build-backend-staging
+  only:
+    - master
+  tags:
+    - nDevRunner    
+########################################## K8S #################################################
+deploy-backend-K8S:
+  stage: deploy-k8s
+  script:
+    - kubectl apply -f k8s/deployment.yaml
+    - kubectl apply -f k8s/service.yaml
+    - kubectl rollout restart deployment/blogengineapp
+  needs:
+    - job: deploy-docker-compose
+  tags:
+    - nDevRunner

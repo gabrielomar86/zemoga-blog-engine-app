@@ -1,0 +1,10 @@
+bin\
+obj\
+ci-cd\
+dev-environment\
+test\
+README.md
+.vscode
+.vs
+.dockerignore
+.template.config

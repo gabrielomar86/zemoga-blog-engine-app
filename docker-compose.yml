@@ -1,0 +1,13 @@
+version: "3.5"
+
+services:
+  blogengineapp:
+    build:
+      context: ./src
+      dockerfile: ../ci-cd/docker/Dockerfile
+    restart: on-failure
+    container_name: blogengineapp-server
+    ports:
+      - "2003:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development

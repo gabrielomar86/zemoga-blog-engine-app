@@ -1,0 +1,8 @@
+version: "3.5"
+
+services:
+  dev-environment:
+    command: 'dotnet watch --project api/api.csproj run'
+  
+  dev-environment-test-services:
+    command: 'dotnet watch --project test/services.test/services.test.csproj test'
