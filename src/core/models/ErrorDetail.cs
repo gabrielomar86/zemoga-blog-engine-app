@@ -18,7 +18,7 @@ namespace core.models
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this, null, new JsonSerializerOptions { IgnoreNullValues = true });
+            return JsonSerializer.Serialize(this, typeof(ErrorDetail), new JsonSerializerOptions { IgnoreNullValues = true });
         }
 
         public ErrorDetail RemoveDetail()
