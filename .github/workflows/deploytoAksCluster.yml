@@ -14,7 +14,7 @@ jobs:
     - name: Build and push image to ACR
       id: build-image
       run: |
-        docker build "$GITHUB_WORKSPACE/" -f  "ci-cd/docker/Dockerfile" -t interviewsacr.azurecr.io/interviewscluster:${{ github.sha }} --label dockerfile-path=ci-cd/docker/Dockerfile
+        docker build "$GITHUB_WORKSPACE/src" -f  "ci-cd/docker/Dockerfile" -t interviewsacr.azurecr.io/interviewscluster:${{ github.sha }} --label dockerfile-path=ci-cd/docker/Dockerfile
         docker push interviewsacr.azurecr.io/interviewscluster:${{ github.sha }}
     
     - uses: azure/k8s-set-context@v1
