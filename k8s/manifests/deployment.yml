@@ -1,19 +1,19 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: "interviewscluster-1539"
+  name: "interviewscluster"
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "interviewscluster-1539"
+      app: "interviewscluster"
   template:
     metadata:
       labels:
-        app: "interviewscluster-1539"
+        app: "interviewscluster"
     spec:
       containers:
-        - name: "interviewscluster-1539"
+        - name: "interviewscluster"
           image: "interviewsacr.azurecr.io/interviewscluster"
           ports:
           - containerPort: 80

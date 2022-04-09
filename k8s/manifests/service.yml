@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-    name: "interviewscluster-1539"
+    name: "interviewscluster"
     labels:
-        app: "interviewscluster-1539"
+        app: "interviewscluster"
 spec:
     type: LoadBalancer
     ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
     selector:
-        app: "interviewscluster-1539"
+        app: "interviewscluster"
