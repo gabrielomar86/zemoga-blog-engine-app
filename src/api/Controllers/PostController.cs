@@ -27,7 +27,7 @@ namespace BlogEngineApp.api.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] PostDto postDto)
         {
-            _creationPostFlowNotifier.CreatePost(postDto);
+            _postService.CreatePost(postDto);
             return Created(nameof(Create), postDto);
         }
 

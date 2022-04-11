@@ -19,30 +19,39 @@ namespace BlogEngineApp.services
 
         public Task Handle(CreationPostFlowCommand notification, CancellationToken cancellationToken)
         {
-            var postDto = (PostDto)notification.Payload;
-
-            switch (notification.Status)
+            try
             {
-                case PostStatus.CreatePost:
-                    Console.WriteLine("=======> Creating Post");
-                    _postService.CreatePost(postDto);
-                    break;
-                case PostStatus.UpdatePostToCreatedStatus:
-                    Console.WriteLine("=======> Post Created --> Update Post To Created Status");
-                    _postService.ChangePostToCreatedStatus(postDto.Id);
-                    break;
-                case PostStatus.PostCreated:
-                    Console.WriteLine("=======> Changing Post To Pending Status");
-                    _postService.ChangePostToPendingStatus(postDto.Id);
-                    break;
-                case PostStatus.PostPending:
-                    Console.WriteLine("=======> Post Changed To Pending Status");
-                    break;
-                default:
-                    Console.WriteLine("=======> No handler for status: " + notification.Status);
-                    break;
+                var postDto = (PostDto)notification.Payload;
+
+                switch (notification.Status)
+                {
+                    case PostStatus.CreatePost:
+                        Console.WriteLine("=======> Creating Post");
+                        _postService.CreatePost(postDto);
+                        break;
+                    case PostStatus.UpdatePostToCreatedStatus:
+                        Console.WriteLine("=======> Post Created --> Update Post To Created Status");
+                        _postService.ChangePostToCreatedStatus(postDto.Id);
+                        break;
+                    case PostStatus.PostCreated:
+                        Console.WriteLine("=======> Changing Post To Pending Status");
+                        _postService.ChangePostToPendingStatus(postDto.Id);
+                        break;
+                    case PostStatus.PostPending:
+                        Console.WriteLine("=======> Post Changed To Pending Status");
+                        break;
+                    default:
+                        Console.WriteLine("=======> No handler for status: " + notification.Status);
+                        break;
+                }
+                return Task.CompletedTask;
             }
-            return Task.CompletedTask;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"===> Error Post Creation StackTrace: {ex.StackTrace}");
+                Console.WriteLine($"===> Error Post Creation InnerException: {ex.InnerException?.Message}");
+                return Task.CompletedTask;
+            }
         }
 
     }
