@@ -33,30 +33,30 @@ namespace BlogEngineApp.api.Controllers
 
         [HttpPatch]
         [Route("{postId}/approve")]
-        public IActionResult Approve(Guid postId) => Ok(_postService.Approve(postId));
+        public IActionResult Approve(Guid postId) => Ok(_postService.ChangePostToApproveStatus(postId));
 
         [HttpPatch]
         [Route("{postId}/reject")]
-        public IActionResult Reject(Guid postId) => Ok(_postService.Reject(postId));
+        public IActionResult Reject(Guid postId) => Ok(_postService.ChangePostToRejectStatus(postId));
 
         [HttpGet]
         [Route("{postId}")]
-        public IActionResult Get(Guid postId) => Ok(_postService.GetById(postId));
+        public IActionResult Get(Guid postId) => Ok(_postService.GetPostById(postId));
 
         [HttpGet]
-        public IActionResult Get() => Ok(_postService.GetAll());
+        public IActionResult Get() => Ok(_postService.GetAllPosts());
 
         [HttpGet]
         [Route("pendings")]
-        public IActionResult GetPendings([FromQuery] string userId) => Ok(_postService.GetAllPending(userId));
+        public IActionResult GetPendings([FromQuery] string userId) => Ok(_postService.GetAllPostsPending(userId));
 
         [HttpGet]
         [Route("approved")]
-        public IActionResult GetApproved([FromQuery] string userId) => Ok(_postService.GetAllApproved(userId));
+        public IActionResult GetApproved([FromQuery] string userId) => Ok(_postService.GetAllPostsApproved(userId));
 
         [HttpGet]
         [Route("rejected")]
-        public IActionResult GetRejected([FromQuery] string userId) => Ok(_postService.GetAllRejected(userId));
+        public IActionResult GetRejected([FromQuery] string userId) => Ok(_postService.GetAllPostsRejected(userId));
 
     }
 

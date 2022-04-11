@@ -38,7 +38,7 @@ namespace BlogEngineApp.services.test
                 .Setup(mrw => mrw.PostRepository.Insert(It.IsAny<Post>()));
 
             // Act
-            var resultado = posService.Create(new PostDto());
+            var resultado = posService.CreatePost(new PostDto());
 
             // Assert
             Assert.IsType<PostDto>(resultado);
@@ -46,7 +46,7 @@ namespace BlogEngineApp.services.test
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.Insert(It.IsAny<Post>()), Times.Once);
             _mockCreationPostFlowNotifier
-                .Verify(notifier => notifier.PostCreated(It.IsAny<PostDto>()), Times.Once);
+                .Verify(notifier => notifier.UpdatePostToCreatedStatus(It.IsAny<PostDto>()), Times.Once);
         }
 
         [Fact]
@@ -59,17 +59,17 @@ namespace BlogEngineApp.services.test
                 .Throws<Exception>();
 
             // Act
-            Assert.Throws<Exception>(() => posService.Create(new PostDto()));
+            Assert.Throws<Exception>(() => posService.CreatePost(new PostDto()));
 
             // Assert
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.Insert(It.IsAny<Post>()), Times.Once);
             _mockCreationPostFlowNotifier
-                .Verify(notifier => notifier.PostCreated(It.IsAny<PostDto>()), Times.Never);
+                .Verify(notifier => notifier.UpdatePostToCreatedStatus(It.IsAny<PostDto>()), Times.Never);
         }
 
         [Fact]
-        public void Should_GetById()
+        public void Should_GetPostById()
         {
             // Arrange
             var posService = GetPostService();
@@ -78,7 +78,7 @@ namespace BlogEngineApp.services.test
                 .Returns(new Post());
 
             // Act
-            var resultado = posService.GetById(It.IsAny<Guid>());
+            var resultado = posService.GetPostById(It.IsAny<Guid>());
 
             // Assert
             Assert.IsType<PostDto>(resultado);
@@ -87,7 +87,7 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_GetAll_Without_UserId()
+        public void Should_GetAllPosts_Without_UserId()
         {
             // Arrange
             var posService = GetPostService();
@@ -96,7 +96,7 @@ namespace BlogEngineApp.services.test
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAll();
+            var resultado = posService.GetAllPosts();
 
             // Assert
             Assert.IsType<List<PostDto>>(resultado);
@@ -108,7 +108,7 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_GetAll_With_UserId()
+        public void Should_GetAllPosts_With_UserId()
         {
             // Arrange
             var posService = GetPostService();
@@ -117,7 +117,7 @@ namespace BlogEngineApp.services.test
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAll("userId");
+            var resultado = posService.GetAllPosts("userId");
 
             // Assert
             Assert.IsType<List<PostDto>>(resultado);
@@ -128,7 +128,7 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_Reject()
+        public void Should_ChangePostToRejectStatus()
         {
             // Arrange
             var posService = GetPostService();
@@ -137,7 +137,7 @@ namespace BlogEngineApp.services.test
                 .Returns(new Post());
 
             // Act
-            var resultado = posService.Reject(It.IsAny<Guid>());
+            var resultado = posService.ChangePostToRejectStatus(It.IsAny<Guid>());
 
             // Assert
             Assert.IsType<PostDto>(resultado);
@@ -149,7 +149,7 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_Reject_NotFound()
+        public void Should_ChangePostToRejectStatus_NotFound()
         {
             // Arrange
             var posService = GetPostService();
@@ -158,7 +158,7 @@ namespace BlogEngineApp.services.test
                 .Returns(() => null);
 
             // Act - Assert
-            var abc = Assert.Throws<NotFoundResponseException>(() => posService.Reject(It.IsAny<Guid>()));
+            var abc = Assert.Throws<NotFoundResponseException>(() => posService.ChangePostToRejectStatus(It.IsAny<Guid>()));
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
@@ -166,7 +166,7 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_Pending()
+        public void Should_ChangePostToCreatedStatus()
         {
             // Arrange
             var postServiceMock = GetPostService();
@@ -175,7 +175,7 @@ namespace BlogEngineApp.services.test
                 .Returns(new Post());
 
             // Act
-            var resultado = postServiceMock.Pending(It.IsAny<Guid>());
+            var resultado = postServiceMock.ChangePostToCreatedStatus(It.IsAny<Guid>());
 
             // Assert
             Assert.IsType<PostDto>(resultado);
@@ -184,10 +184,13 @@ namespace BlogEngineApp.services.test
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Once);
+            _mockCreationPostFlowNotifier
+                .Verify(notifier => notifier.PostChangedToCreatedStatus(It.IsAny<PostDto>()), Times.Once);
+
         }
 
         [Fact]
-        public void Should_Pending_NotFound()
+        public void Should_ChangePostToCreatedStatus_NotFound()
         {
             // Arrange
             var posService = GetPostService();
@@ -196,15 +199,62 @@ namespace BlogEngineApp.services.test
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<NotFoundResponseException>(() => posService.Pending(It.IsAny<Guid>()));
+            Assert.Throws<NotFoundResponseException>(() => posService.ChangePostToCreatedStatus(It.IsAny<Guid>()));
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Never);
+            _mockCreationPostFlowNotifier
+                .Verify(notifier => notifier.PostChangedToCreatedStatus(It.IsAny<PostDto>()), Times.Never);
+
         }
 
         [Fact]
-        public void Should_Approve()
+        public void Should_ChangePostToPendingStatus()
+        {
+            // Arrange
+            var postServiceMock = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(new Post());
+
+            // Act
+            var resultado = postServiceMock.ChangePostToPendingStatus(It.IsAny<Guid>());
+
+            // Assert
+            Assert.IsType<PostDto>(resultado);
+
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Once);
+            _mockCreationPostFlowNotifier
+                .Verify(notifier => notifier.PostChangedToPendingStatus(It.IsAny<PostDto>()), Times.Once);
+
+        }
+
+        [Fact]
+        public void Should_ChangePostToPendingStatus_NotFound()
+        {
+            // Arrange
+            var posService = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(() => null);
+
+            // Act - Assert
+            Assert.Throws<NotFoundResponseException>(() => posService.ChangePostToPendingStatus(It.IsAny<Guid>()));
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Never);
+            _mockCreationPostFlowNotifier
+                .Verify(notifier => notifier.PostChangedToPendingStatus(It.IsAny<PostDto>()), Times.Never);
+
+        }
+
+        [Fact]
+        public void Should_ChangePostToApproveStatus()
         {
             // Arrange
             var posService = GetPostService();
@@ -213,7 +263,7 @@ namespace BlogEngineApp.services.test
                 .Returns(new Post());
 
             // Act
-            var resultado = posService.Approve(It.IsAny<Guid>());
+            var resultado = posService.ChangePostToApproveStatus(It.IsAny<Guid>());
 
             // Assert
             Assert.IsType<PostDto>(resultado);
@@ -225,7 +275,7 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_Approve_NotFound()
+        public void Should_ChangePostToApproveStatus_NotFound()
         {
             // Arrange
             var posService = GetPostService();
@@ -234,7 +284,7 @@ namespace BlogEngineApp.services.test
                 .Returns(() => null);
 
             // Act - Assert
-            Assert.Throws<NotFoundResponseException>(() => posService.Approve(It.IsAny<Guid>()));
+            Assert.Throws<NotFoundResponseException>(() => posService.ChangePostToApproveStatus(It.IsAny<Guid>()));
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
             _mockRepositoryWrapper
@@ -244,16 +294,16 @@ namespace BlogEngineApp.services.test
         #region  WITHOUT_USERID
 
         [Fact]
-        public void Should_GetAllPending_Without_UserId()
+        public void Should_GetAllPostsPending_Without_UserId()
         {
             // Arrange
             var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()))
+                .Setup(mrw => mrw.PostRepository.FindPostsByPostStatus(It.IsAny<PostStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAllPending();
+            var resultado = posService.GetAllPostsPending();
 
             // Assert
             Assert.IsType<List<PostPresenter>>(resultado);
@@ -262,16 +312,16 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_GetAllApproved_Without_UserId()
+        public void Should_GetAllPostsApproved_Without_UserId()
         {
             // Arrange
             var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()))
+                .Setup(mrw => mrw.PostRepository.FindPostsByPostStatus(It.IsAny<PostStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAllApproved();
+            var resultado = posService.GetAllPostsApproved();
 
             // Assert
             Assert.IsType<List<PostDto>>(resultado);
@@ -280,16 +330,16 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_GetAllRejected_Without_UserId()
+        public void Should_GetAllPostsRejected_Without_UserId()
         {
             // Arrange
             var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()))
+                .Setup(mrw => mrw.PostRepository.FindPostsByPostStatus(It.IsAny<PostStatus>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAllRejected();
+            var resultado = posService.GetAllPostsRejected();
 
             // Assert
             Assert.IsType<List<PostDto>>(resultado);
@@ -302,17 +352,17 @@ namespace BlogEngineApp.services.test
         #region  WITH_USERID
 
         [Fact]
-        public void Should_GetAllPending_With_UserId()
+        public void Should_GetAllPostsPending_With_UserId()
         {
             // Arrange
             var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.PostRepository.FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
+                .Setup(mrw => mrw.PostRepository.FindPostsByStatusAndUserId(It.IsAny<PostStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAllPending("userId");
+            var resultado = posService.GetAllPostsPending("userId");
 
             // Assert
             Assert.IsType<List<PostPresenter>>(resultado);
@@ -321,17 +371,17 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_GetAllApproved_With_UserId()
+        public void Should_GetAllPostsApproved_With_UserId()
         {
             // Arrange
             var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.PostRepository.FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
+                .Setup(mrw => mrw.PostRepository.FindPostsByStatusAndUserId(It.IsAny<PostStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAllApproved("userId");
+            var resultado = posService.GetAllPostsApproved("userId");
 
             // Assert
             Assert.IsType<List<PostDto>>(resultado);
@@ -340,17 +390,17 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
-        public void Should_GetAllRejected_With_UserId()
+        public void Should_GetAllPostsRejected_With_UserId()
         {
             // Arrange
             var posService = GetPostService();
             _mockRepositoryWrapper
-                .Setup(mrw => mrw.PostRepository.FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
+                .Setup(mrw => mrw.PostRepository.FindPostsByStatusAndUserId(It.IsAny<PostStatus>(),
                                                                                     It.IsAny<string>()))
                 .Returns(GetEntitiesQueryable());
 
             // Act
-            var resultado = posService.GetAllRejected("userId");
+            var resultado = posService.GetAllPostsRejected("userId");
 
             // Assert
             Assert.IsType<List<PostDto>>(resultado);
@@ -371,10 +421,10 @@ namespace BlogEngineApp.services.test
         {
             var listado = new List<Post>
             {
-                new Post { Id = Guid.Parse("5ee251fd-14ee-480f-b6d8-da60e1193bf1"), Status = PostStatus.Approved, UserId = "UserId1" },
-                new Post { Id = Guid.Parse("ff5ee301-c3ed-4110-896d-7149d5ab1831"), Status = PostStatus.Pending, UserId = "UserId2" },
-                new Post { Id = Guid.Parse("1ddc8f74-169a-4bf3-bae4-d215c735b180"), Status = PostStatus.Pending, UserId = "UserId2.1" },
-                new Post { Id = Guid.Parse("e0b0c0ec-b39a-4b19-a8d5-93c7398a5407"), Status = PostStatus.Rejected, UserId = "UserId3" },
+                new Post { Id = Guid.Parse("5ee251fd-14ee-480f-b6d8-da60e1193bf1"), Status = PostStatus.PostPending, UserId = "UserId1" },
+                new Post { Id = Guid.Parse("ff5ee301-c3ed-4110-896d-7149d5ab1831"), Status = PostStatus.UpdatePostToPendingStatus, UserId = "UserId2" },
+                new Post { Id = Guid.Parse("1ddc8f74-169a-4bf3-bae4-d215c735b180"), Status = PostStatus.UpdatePostToPendingStatus, UserId = "UserId2.1" },
+                new Post { Id = Guid.Parse("e0b0c0ec-b39a-4b19-a8d5-93c7398a5407"), Status = PostStatus.PostRejected, UserId = "UserId3" },
             };
 
             return listado.AsQueryable();
@@ -383,20 +433,20 @@ namespace BlogEngineApp.services.test
         private void AssertWithUserId()
         {
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()), Times.Never);
+                .Verify(mrw => mrw.PostRepository.FindPostsByPostStatus(It.IsAny<PostStatus>()), Times.Never);
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository
-                                    .FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
+                                    .FindPostsByStatusAndUserId(It.IsAny<PostStatus>(),
                                                                 It.IsAny<string>()), Times.Once);
         }
 
         private void AssertWithoutUserId()
         {
             _mockRepositoryWrapper
-                .Verify(mrw => mrw.PostRepository.FindByPostStatus(It.IsAny<PostStatus>()), Times.Once);
+                .Verify(mrw => mrw.PostRepository.FindPostsByPostStatus(It.IsAny<PostStatus>()), Times.Once);
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository
-                                    .FindByPostStatusAndUserId(It.IsAny<PostStatus>(),
+                                    .FindPostsByStatusAndUserId(It.IsAny<PostStatus>(),
                                                                 It.IsAny<string>()), Times.Never);
         }
 

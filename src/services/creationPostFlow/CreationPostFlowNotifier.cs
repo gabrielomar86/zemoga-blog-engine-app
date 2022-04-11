@@ -16,22 +16,33 @@ namespace BlogEngineApp.services
 
         public void CreatePost(PostDto postDto)
         {
-            Notify(PostStatus.Create, postDto);
+            Notify(PostStatus.CreatePost, postDto);
         }
 
-        public void PostCreated(PostDto postDto)
+        public void UpdatePostToCreatedStatus(PostDto postDto)
         {
-            Notify(PostStatus.Created, postDto);
+            Notify(PostStatus.UpdatePostToCreatedStatus, postDto);
         }
 
-        public void PostChangedToPending(PostDto postDto)
+        public void PostChangedToCreatedStatus(PostDto postDto)
         {
-            Notify(PostStatus.Pending, postDto);
+            Notify(PostStatus.PostCreated, postDto);
+        }
+
+        public void UpdatePostToPendingStatus(PostDto postDto)
+        {
+            Notify(PostStatus.UpdatePostToPendingStatus, postDto);
+        }
+
+        public void PostChangedToPendingStatus(PostDto postDto)
+        {
+            Notify(PostStatus.PostPending, postDto);
         }
 
         private void Notify(PostStatus status, object payload)
         {
             _mediator.Publish(new CreationPostFlowCommand { Status = status, Payload = payload });
         }
+
     }
 }

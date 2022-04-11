@@ -10,7 +10,7 @@ namespace BlogEngineApp.core.interfaces
     /// </summary>
     public interface IPostRepository : IGenericRepository<Post>
     {
-        IEnumerable<Post> FindByPostStatus(PostStatus status);
-        IEnumerable<Post> FindByPostStatusAndUserId(PostStatus status, string userId);
+        IEnumerable<Post> FindPostsByPostStatus(PostStatus status);
+        IEnumerable<Post> FindPostsByStatusAndUserId(PostStatus status, string userId);
     }
 }

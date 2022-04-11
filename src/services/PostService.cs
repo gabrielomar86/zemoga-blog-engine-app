@@ -26,18 +26,18 @@ namespace BlogEngineApp.services
             _creationPostFlowNotifier = creationPostFlowNotifier;
         }
 
-        public PostDto Create(PostDto postDto)
+        public PostDto CreatePost(PostDto postDto)
         {
             var post = _mapper.Map<Post>(postDto);
             _repositoryWrapper.PostRepository.Insert(post);
             var postDtoResponse = _mapper.Map<PostDto>(post);
 
-            _creationPostFlowNotifier.PostCreated(postDtoResponse);
+            _creationPostFlowNotifier.UpdatePostToCreatedStatus(postDtoResponse);
 
             return postDtoResponse;
         }
 
-        public PostDto GetById(Guid id)
+        public PostDto GetPostById(Guid id)
         {
             var entity = _repositoryWrapper
                 .PostRepository
@@ -46,7 +46,7 @@ namespace BlogEngineApp.services
             return _mapper.Map<PostDto>(entity);
         }
 
-        public IEnumerable<PostDto> GetAll(string userId = null)
+        public IEnumerable<PostDto> GetAllPosts(string userId = null)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -64,39 +64,46 @@ namespace BlogEngineApp.services
             );
         }
 
-        public IEnumerable<PostPresenter> GetAllPending(string userId = null)
+        public IEnumerable<PostPresenter> GetAllPostsPending(string userId = null)
         {
-            return _mapper.Map<List<PostPresenter>>(GetPostsByStatusAndUserId(PostStatus.Pending, userId));
+            return _mapper.Map<List<PostPresenter>>(GetAllPostsByStatusAndUserId(PostStatus.PostPending, userId));
         }
 
-        public IEnumerable<PostDto> GetAllApproved(string userId = null)
+        public IEnumerable<PostDto> GetAllPostsApproved(string userId = null)
         {
-            return _mapper.Map<List<PostDto>>(GetPostsByStatusAndUserId(PostStatus.Approved, userId));
+            return _mapper.Map<List<PostDto>>(GetAllPostsByStatusAndUserId(PostStatus.PostApproved, userId));
         }
 
-        public IEnumerable<PostDto> GetAllRejected(string userId = null)
+        public IEnumerable<PostDto> GetAllPostsRejected(string userId = null)
         {
-            return _mapper.Map<List<PostDto>>(GetPostsByStatusAndUserId(PostStatus.Rejected, userId));
+            return _mapper.Map<List<PostDto>>(GetAllPostsByStatusAndUserId(PostStatus.PostRejected, userId));
         }
 
-        public PostDto Pending(Guid postId)
+        public PostDto ChangePostToCreatedStatus(Guid postId)
         {
-            var postDto = UpdateStatus(postId, PostStatus.Pending);
-            _creationPostFlowNotifier.PostChangedToPending(postDto);
+            var postDto = UpdatePostStatus(postId, PostStatus.PostCreated);
+            _creationPostFlowNotifier.PostChangedToCreatedStatus(postDto);
             return postDto;
         }
 
-        public PostDto Reject(Guid postId)
+        public PostDto ChangePostToPendingStatus(Guid postId)
         {
-            return UpdateStatus(postId, PostStatus.Rejected);
+            var postDto = UpdatePostStatus(postId, PostStatus.PostPending);
+            _creationPostFlowNotifier.PostChangedToPendingStatus(postDto);
+            return postDto;
         }
 
-        public PostDto Approve(Guid postId)
+        public PostDto ChangePostToRejectStatus(Guid postId)
         {
-            return UpdateStatus(postId, PostStatus.Approved);
+            return UpdatePostStatus(postId, PostStatus.PostRejected);
         }
 
-        private PostDto UpdateStatus(Guid postId, PostStatus status)
+        public PostDto ChangePostToApproveStatus(Guid postId)
+        {
+            return UpdatePostStatus(postId, PostStatus.PostApproved);
+        }
+
+        private PostDto UpdatePostStatus(Guid postId, PostStatus status)
         {
             var post = _repositoryWrapper.PostRepository.GetById(postId);
 
@@ -108,12 +115,12 @@ namespace BlogEngineApp.services
             return _mapper.Map<PostDto>(post);
         }
 
-        private IEnumerable<Post> GetPostsByStatusAndUserId(PostStatus status, string userId)
+        private IEnumerable<Post> GetAllPostsByStatusAndUserId(PostStatus status, string userId)
         {
             if (string.IsNullOrEmpty(userId))
-                return _repositoryWrapper.PostRepository.FindByPostStatus(status);
+                return _repositoryWrapper.PostRepository.FindPostsByPostStatus(status);
 
-            return _repositoryWrapper.PostRepository.FindByPostStatusAndUserId(status, userId);
+            return _repositoryWrapper.PostRepository.FindPostsByStatusAndUserId(status, userId);
         }
 
     }

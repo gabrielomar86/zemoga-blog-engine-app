@@ -8,22 +8,38 @@ namespace BlogEngineApp.core.enums
         /// <summary>
         /// Create
         /// </summary>
-        Create = 0,
+        CreatePost = 0,
         /// <summary>
         /// Created
         /// </summary>
-        Created = 1,
+        UpdatePostToCreatedStatus = 1,
         /// <summary>
-        /// Pending
+        /// Created
         /// </summary>
-        Pending = 2,
+        PostCreated = 2,
         /// <summary>
-        /// Approved
+        /// UpdatePostToPendingStatus
         /// </summary>
-        Approved = 3,
+        UpdatePostToPendingStatus = 3,
         /// <summary>
-        /// Rejected
+        /// PostChangeToPendingStatus
         /// </summary>
-        Rejected = 4
+        PostPending = 4,
+        /// <summary>
+        /// UpdatePostToApprovedStatus
+        /// </summary>
+        UpdatePostToApprovedStatus = 5,
+        /// <summary>
+        /// PostChangedToApprovedStatus
+        /// </summary>
+        PostApproved = 6,
+        /// <summary>
+        /// UpdatePostToRejectStatus
+        /// </summary>
+        UpdatePostToRejectStatus = 7,
+        /// <summary>
+        /// PostChangedToRejectedStatus
+        /// </summary>
+        PostRejected = 8,
     }
 }

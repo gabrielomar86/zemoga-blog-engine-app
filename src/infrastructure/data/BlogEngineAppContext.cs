@@ -24,7 +24,7 @@ namespace BlogEngineApp.infrastructure.data
             modelBuilder.Entity<Post>()
                 .Property(b => b.Status)
                 .HasConversion<string>()
-                .HasColumnType("char(20)");
+                .HasColumnType("char(40)");
 
             modelBuilder.Entity<User>()
                 .Property(b => b.Role)

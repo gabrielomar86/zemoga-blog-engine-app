@@ -5,8 +5,10 @@ namespace BlogEngineApp.core.extensions
     public interface ICreationPostFlowNotifier
     {
         void CreatePost(PostDto postDto);
-        void PostCreated(PostDto postDto);
-        void PostChangedToPending(PostDto postDto);
+        void UpdatePostToCreatedStatus(PostDto postDto);
+        void PostChangedToCreatedStatus(PostDto postDto);
+        void UpdatePostToPendingStatus(PostDto postDto);
+        void PostChangedToPendingStatus(PostDto postDto);
 
     }
 }

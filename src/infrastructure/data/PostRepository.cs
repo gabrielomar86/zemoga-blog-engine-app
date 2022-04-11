@@ -13,13 +13,13 @@ namespace BlogEngineApp.infrastructure.data
 
         }
 
-        public IEnumerable<Post> FindByPostStatus(PostStatus status)
+        public IEnumerable<Post> FindPostsByPostStatus(PostStatus status)
         {
             return FindByCondition(post => post.Status == status)
                 .Include(post => post.User);
         }
 
-        public IEnumerable<Post> FindByPostStatusAndUserId(PostStatus status, string userId)
+        public IEnumerable<Post> FindPostsByStatusAndUserId(PostStatus status, string userId)
         {
             return FindByCondition(post => post.Status == status && post.UserId == userId)
                 .Include(post => post.User);

@@ -7,14 +7,15 @@ namespace BlogEngineApp.core.interfaces
 {
     public interface IPostService
     {
-        PostDto Create(PostDto postDto);
-        PostDto GetById(Guid id);
-        PostDto Pending(Guid postId);
-        PostDto Reject(Guid postId);
-        PostDto Approve(Guid postId);
-        IEnumerable<PostDto> GetAll(string userId = null);
-        IEnumerable<PostPresenter> GetAllPending(string userId = null);
-        IEnumerable<PostDto> GetAllApproved(string userId = null);
-        IEnumerable<PostDto> GetAllRejected(string userId = null);
+        PostDto CreatePost(PostDto postDto);
+        PostDto GetPostById(Guid id);
+        PostDto ChangePostToCreatedStatus(Guid postId);
+        PostDto ChangePostToPendingStatus(Guid postId);
+        PostDto ChangePostToRejectStatus(Guid postId);
+        PostDto ChangePostToApproveStatus(Guid postId);
+        IEnumerable<PostDto> GetAllPosts(string userId = null);
+        IEnumerable<PostPresenter> GetAllPostsPending(string userId = null);
+        IEnumerable<PostDto> GetAllPostsApproved(string userId = null);
+        IEnumerable<PostDto> GetAllPostsRejected(string userId = null);
     }
 }

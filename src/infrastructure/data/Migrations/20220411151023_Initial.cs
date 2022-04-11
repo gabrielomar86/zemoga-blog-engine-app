@@ -28,8 +28,8 @@ namespace infrastructure.data.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Title = table.Column<string>(type: "varchar(100)", nullable: false),
                     Content = table.Column<string>(type: "varchar(300)", nullable: false),
-                    Status = table.Column<string>(type: "char(20)", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(100)", nullable: true),
+                    Status = table.Column<string>(type: "char(40)", nullable: true),
+                    UserId = table.Column<string>(type: "varchar(100)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Active = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
@@ -41,7 +41,7 @@ namespace infrastructure.data.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserName",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,12 +75,12 @@ namespace infrastructure.data.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserName", "FullName", "Password", "Role" },
-                values: new object[] { "writer", "Gabriel Tarapues", "a82feee3cc1af8bcabda979e8775ef0f", "Writer" });
+                values: new object[] { "gtarapues", "Gabriel Tarapues", "ffd84740ecdafd49e91f7c74ab2adfd5", "Writer" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserName", "FullName", "Password", "Role" },
-                values: new object[] { "editor", "Omar Rodriguez", "5aee9dbd2a188839105073571bee1b1f", "Editor" });
+                values: new object[] { "orodriguez", "Omar Rodriguez", "53496f07969ba549e38b147db6b18e6e", "Editor" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",

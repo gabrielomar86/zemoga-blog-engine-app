@@ -64,14 +64,14 @@ namespace infrastructure.data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("char(20)");
+                        .HasColumnType("char(40)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
@@ -107,23 +107,23 @@ namespace infrastructure.data.Migrations
                     b.HasData(
                         new
                         {
-                            UserName = "writer",
+                            UserName = "gtarapues",
                             FullName = "Gabriel Tarapues",
-                            Password = "a82feee3cc1af8bcabda979e8775ef0f",
+                            Password = "ffd84740ecdafd49e91f7c74ab2adfd5",
                             Role = "Writer"
                         },
                         new
                         {
-                            UserName = "editor",
+                            UserName = "orodriguez",
                             FullName = "Omar Rodriguez",
-                            Password = "5aee9dbd2a188839105073571bee1b1f",
+                            Password = "53496f07969ba549e38b147db6b18e6e",
                             Role = "Editor"
                         });
                 });
 
             modelBuilder.Entity("BlogEngineApp.core.entities.Comment", b =>
                 {
-                    b.HasOne("BlogEngineApp.core.entities.Post", "Blog")
+                    b.HasOne("BlogEngineApp.core.entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -133,7 +133,7 @@ namespace infrastructure.data.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Blog");
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });
@@ -142,7 +142,9 @@ namespace infrastructure.data.Migrations
                 {
                     b.HasOne("BlogEngineApp.core.entities.User", "User")
                         .WithMany("Posts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

@@ -23,16 +23,20 @@ namespace BlogEngineApp.services
 
             switch (notification.Status)
             {
-                case PostStatus.Create:
+                case PostStatus.CreatePost:
                     Console.WriteLine("=======> Creating Post");
-                    _postService.Create(postDto);
+                    _postService.CreatePost(postDto);
                     break;
-                case PostStatus.Created:
-                    Console.WriteLine("=======> Post Created");
-                    _postService.Pending(postDto.Id);
+                case PostStatus.UpdatePostToCreatedStatus:
+                    Console.WriteLine("=======> Post Created --> Update Post To Created Status");
+                    _postService.ChangePostToCreatedStatus(postDto.Id);
                     break;
-                case PostStatus.Pending:
-                    Console.WriteLine("=======> Post Changed To Pending");
+                case PostStatus.PostCreated:
+                    Console.WriteLine("=======> Changing Post To Pending Status");
+                    _postService.ChangePostToPendingStatus(postDto.Id);
+                    break;
+                case PostStatus.PostPending:
+                    Console.WriteLine("=======> Post Changed To Pending Status");
                     break;
                 default:
                     Console.WriteLine("=======> No handler for status: " + notification.Status);
