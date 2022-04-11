@@ -37,46 +37,46 @@ namespace BlogEngineApp.services
             return postDtoResponse;
         }
 
-        public PostDto GetPostById(Guid id)
+        public PostPresenter GetPostById(Guid id)
         {
             var entity = _repositoryWrapper
                 .PostRepository
                 .GetById(id);
 
-            return _mapper.Map<PostDto>(entity);
+            return _mapper.Map<PostPresenter>(entity);
         }
 
-        public IEnumerable<PostDto> GetAllPosts(string userId = null)
+        public IEnumerable<PostPresenter> GetAllPosts(string userId = null)
         {
             if (string.IsNullOrEmpty(userId))
             {
-                return _mapper.Map<List<PostDto>>(
+                return _mapper.Map<List<PostPresenter>>(
                     _repositoryWrapper
                         .PostRepository
                         .GetAll()
                 );
             }
 
-            return _mapper.Map<List<PostDto>>(
+            return _mapper.Map<List<PostPresenter>>(
                 _repositoryWrapper
                     .PostRepository
                     .FindByCondition(x => x.UserId == userId)
             );
         }
 
-        public IEnumerable<PostPresenter> GetAllPostsPending(string userId = null)
+        public IEnumerable<PostPendingPresenter> GetAllPostsPending(string userId = null)
         {
-            return _mapper.Map<List<PostPresenter>>(GetAllPostsByStatusAndUserId(PostStatus.PostPending, userId));
+            return _mapper.Map<List<PostPendingPresenter>>(GetAllPostsByStatusAndUserId(PostStatus.PostPending, userId));
         }
 
-        public IEnumerable<PostDto> GetAllPostsApproved(string userId = null)
+        public IEnumerable<PostPresenter> GetAllPostsApproved(string userId = null)
         {
-            return _mapper.Map<List<PostDto>>(GetAllPostsByStatusAndUserId(PostStatus.PostApproved, userId));
+            return _mapper.Map<List<PostPresenter>>(GetAllPostsByStatusAndUserId(PostStatus.PostApproved, userId));
         }
 
-        public IEnumerable<PostDto> GetAllPostsRejected(string userId = null)
+        public IEnumerable<PostPresenter> GetAllPostsRejected(string userId = null)
         {
-            return _mapper.Map<List<PostDto>>(GetAllPostsByStatusAndUserId(PostStatus.PostRejected, userId));
+            return _mapper.Map<List<PostPresenter>>(GetAllPostsByStatusAndUserId(PostStatus.PostRejected, userId));
         }
 
         public PostDto ChangePostToCreatedStatus(Guid postId)

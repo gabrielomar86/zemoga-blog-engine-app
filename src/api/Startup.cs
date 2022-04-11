@@ -15,6 +15,8 @@ namespace BlogEngineApp.api
 {
     public class Startup
     {
+        private string _allowedOrigins = "_allowedOrigins";
+
         public Startup()
         {
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -32,6 +34,18 @@ namespace BlogEngineApp.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(_allowedOrigins,
+                builder =>
+                {
+                    builder.WithOrigins()
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                });
+            });
 
             services.AddControllers();
 
@@ -62,6 +76,8 @@ namespace BlogEngineApp.api
             }
 
             app.ConfigureCustomExceptionMiddleware();
+
+            app.UseCors(_allowedOrigins);
 
             app.UseHttpsRedirection();
 

@@ -81,7 +81,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetPostById(It.IsAny<Guid>());
 
             // Assert
-            Assert.IsType<PostDto>(resultado);
+            Assert.IsType<PostPresenter>(resultado);
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
         }
@@ -99,7 +99,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPosts();
 
             // Assert
-            Assert.IsType<List<PostDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
             Assert.Equal(4, resultado.Count());
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetAll(), Times.Once);
@@ -120,7 +120,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPosts("userId");
 
             // Assert
-            Assert.IsType<List<PostDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
             _mockRepositoryWrapper
                 .Verify(mrw => mrw.PostRepository.GetAll(), Times.Never);
             _mockRepositoryWrapper
@@ -306,7 +306,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPostsPending();
 
             // Assert
-            Assert.IsType<List<PostPresenter>>(resultado);
+            Assert.IsType<List<PostPendingPresenter>>(resultado);
 
             AssertWithoutUserId();
         }
@@ -324,7 +324,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPostsApproved();
 
             // Assert
-            Assert.IsType<List<PostDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
 
             AssertWithoutUserId();
         }
@@ -342,7 +342,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPostsRejected();
 
             // Assert
-            Assert.IsType<List<PostDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
 
             AssertWithoutUserId();
         }
@@ -365,7 +365,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPostsPending("userId");
 
             // Assert
-            Assert.IsType<List<PostPresenter>>(resultado);
+            Assert.IsType<List<PostPendingPresenter>>(resultado);
 
             AssertWithUserId();
         }
@@ -384,7 +384,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPostsApproved("userId");
 
             // Assert
-            Assert.IsType<List<PostDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
 
             AssertWithUserId();
         }
@@ -403,7 +403,7 @@ namespace BlogEngineApp.services.test
             var resultado = posService.GetAllPostsRejected("userId");
 
             // Assert
-            Assert.IsType<List<PostDto>>(resultado);
+            Assert.IsType<List<PostPresenter>>(resultado);
 
             AssertWithUserId();
         }

@@ -9,9 +9,14 @@ namespace BlogEngineApp.services
     {
         public BlogEngineAppMappingProfile()
         {
-            CreateMap<Post, PostPresenter>()
+            CreateMap<Post, PostPendingPresenter>()
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.User.FullName))
                 .ForMember(dest => dest.SubmitDate, opt => opt.MapFrom(src => src.CreationDate));
+
+            CreateMap<Post, PostPresenter>()
+                .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.User.FullName))
+                .ForMember(dest => dest.SubmitDate, opt => opt.MapFrom(src => src.CreationDate))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
             CreateMap<Post, PostDto>();
             CreateMap<PostDto, Post>()
