@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { PostPending } from '../core/post-pending.interface';
 import { Observable } from 'rxjs';
 import { PostNew } from '../core/post-new.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  API_URL = 'http://localhost:5000/posts';
+  API_URL = `${environment.apiBaseUrl}/posts`;
 
   constructor(private httpClient: HttpClient) { }
 
