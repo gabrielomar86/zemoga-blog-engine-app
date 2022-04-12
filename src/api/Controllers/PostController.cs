@@ -2,6 +2,7 @@
 using BlogEngineApp.core.dto;
 using BlogEngineApp.core.extensions;
 using BlogEngineApp.core.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +26,7 @@ namespace BlogEngineApp.api.Controllers
         }
 
         [HttpPost]
+        [Authorize("OnlyWriter")]
         public IActionResult Create([FromBody] PostDto postDto)
         {
             _postService.CreatePost(postDto);
@@ -32,10 +34,12 @@ namespace BlogEngineApp.api.Controllers
         }
 
         [HttpPatch]
+        [Authorize("OnlyEditor")]
         [Route("{postId}/approve")]
         public IActionResult Approve(Guid postId) => Ok(_postService.ChangePostToApproveStatus(postId));
 
         [HttpPatch]
+        [Authorize("OnlyEditor")]
         [Route("{postId}/reject")]
         public IActionResult Reject(Guid postId) => Ok(_postService.ChangePostToRejectStatus(postId));
 
@@ -47,10 +51,12 @@ namespace BlogEngineApp.api.Controllers
         public IActionResult Get() => Ok(_postService.GetAllPosts());
 
         [HttpGet]
+        [Authorize("OnlyEditor")]
         [Route("pendings")]
         public IActionResult GetPendings([FromQuery] string userId) => Ok(_postService.GetAllPostsPending(userId));
 
         [HttpGet]
+        [Authorize]
         [Route("approved")]
         public IActionResult GetApproved([FromQuery] string userId) => Ok(_postService.GetAllPostsApproved(userId));
 
@@ -60,9 +66,4 @@ namespace BlogEngineApp.api.Controllers
 
     }
 
-    class Login
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
 }

@@ -18,6 +18,7 @@ namespace BlogEngineApp.services
             services.AddAutoMapper(typeof(BlogEngineAppMappingProfile));
 
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

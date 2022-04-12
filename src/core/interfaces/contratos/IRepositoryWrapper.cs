@@ -6,6 +6,7 @@ namespace BlogEngineApp.core.interfaces
         /// Repository Wrapper
         /// </summary>
         IPostRepository PostRepository { get; }
+        IUserRepository UserRepository { get; }
 
 
         /// <summary>

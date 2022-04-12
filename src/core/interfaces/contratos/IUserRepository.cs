@@ -7,6 +7,6 @@ namespace BlogEngineApp.core.interfaces
     /// </summary>
     public interface IUserRepository : IGenericRepository<User>
     {
-
+        User ValidateUser(string username, string password);
     }
 }
