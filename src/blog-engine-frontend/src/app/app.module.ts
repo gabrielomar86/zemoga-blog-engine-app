@@ -11,7 +11,10 @@ import { PostComponent } from './components/post/post.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { AngularMaterialModule } from './angular-material.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { NgxLoadingModule } from 'ngx-loading';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,8 +32,11 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     BrowserAnimationsModule,
     AngularMaterialModule,
+    NgxLoadingModule.forRoot({}),
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
