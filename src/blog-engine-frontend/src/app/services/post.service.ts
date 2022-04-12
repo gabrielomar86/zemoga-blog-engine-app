@@ -9,30 +9,31 @@ import { PostNew } from '../core/post-new.interface';
 })
 export class PostService {
 
+  API_URL = 'http://localhost:5000/posts';
+
   constructor(private httpClient: HttpClient) { }
 
   public createPost(post: PostNew): Observable<PostPending> {
-    console.warn('====>', post);
-    return this.httpClient.post<PostPending>('http://localhost:5000/posts', post);
+    return this.httpClient.post<PostPending>(this.API_URL, post);
   }
 
   public getPostById(id: string): Observable<PostPending> {
-    return this.httpClient.get<PostPending>(`http://localhost:5000/posts/${id}`);
+    return this.httpClient.get<PostPending>(`${this.API_URL}/${id}`);
   }
 
   public getAllPosts(): Observable<PostPending> {
-    return this.httpClient.get<PostPending>('http://localhost:5000/posts');
+    return this.httpClient.get<PostPending>(this.API_URL);
   }
 
   public getAllPendingPosts(): Observable<PostPending[]> {
-    return this.httpClient.get<PostPending[]>('http://localhost:5000/posts/pendings');
+    return this.httpClient.get<PostPending[]>(`${this.API_URL}/pendings`);
   }
 
   public getAllApprovedPosts(): Observable<PostPending[]> {
-    return this.httpClient.get<PostPending[]>('http://localhost:5000/posts/approved');
+    return this.httpClient.get<PostPending[]>(`${this.API_URL}/approved`);
   }
 
   public getAllRejectedPosts(): Observable<PostPending[]> {
-    return this.httpClient.get<PostPending[]>('http://localhost:5000/posts/rejected');
+    return this.httpClient.get<PostPending[]>(`${this.API_URL}/rejected`);
   }
 }

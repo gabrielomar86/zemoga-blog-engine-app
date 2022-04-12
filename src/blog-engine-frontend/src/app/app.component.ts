@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
+import { AuthService } from './services/auth.service';
 import { LoadingService } from './services/loading.service';
 
 @Component({
@@ -12,10 +14,19 @@ export class AppComponent implements OnInit {
 
   loadingStatus$!: Observable<boolean>;
 
-  constructor(private loadingService: LoadingService) { }
+  constructor(private loadingService: LoadingService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadingStatus$ = this.loadingService.listenLoading();
+  }
+
+  logout() {
+    sessionStorage.removeItem('TOKEN_KEY');
+    this.router.navigate(['/']);
+  }
+
+  isLogged(): boolean {
+    return this.authService.isLogged();
   }
 
 }

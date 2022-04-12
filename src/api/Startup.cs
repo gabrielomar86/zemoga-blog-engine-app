@@ -20,7 +20,7 @@ namespace BlogEngineApp.api
 {
     public class Startup
     {
-        private string _allowedOrigins = "_allowedOrigins";
+        private readonly string _allowedOrigins = "_allowedOrigins";
 
         public Startup()
         {

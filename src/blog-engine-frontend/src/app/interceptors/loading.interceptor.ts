@@ -3,7 +3,8 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { finalize, Observable } from 'rxjs';
 import { LoadingService } from '../services/loading.service';
@@ -31,3 +32,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     );
   }
 }
+
+export const loadingInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
+];

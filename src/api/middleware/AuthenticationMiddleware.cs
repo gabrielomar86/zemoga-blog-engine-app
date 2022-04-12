@@ -58,6 +58,11 @@ namespace BlogEngineApp.api
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var id = jwtToken.Claims.First(x => x.Type == "id").Value;
                 var role = jwtToken.Claims.First(x => x.Type == "role").Value;
+                context.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, id),
+                    new Claim(ClaimTypes.Role, role)
+                }, "jwt"));
 
             }
             catch (Exception ex)

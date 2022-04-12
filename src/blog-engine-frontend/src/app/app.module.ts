@@ -14,7 +14,9 @@ import { AngularMaterialModule } from './angular-material.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { NgxLoadingModule } from 'ngx-loading';
-import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { LoadingInterceptor, loadingInterceptorProviders } from './interceptors/loading.interceptor';
+import { authInterceptorProviders } from './interceptors/auth.interceptor';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
     PostListComponent,
     PostComponent,
     CommentListComponent,
-    CommentComponent
+    CommentComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import { LoadingInterceptor } from './interceptors/loading.interceptor';
     NgxLoadingModule.forRoot({}),
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
+    loadingInterceptorProviders,
+    authInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

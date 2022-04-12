@@ -1,19 +1,21 @@
-<form class="post-form" [formGroup]="postForm" (ngSubmit)="onSubmit()">
+<h1 mat-dialog-title>POST</h1>
+<div mat-dialog-content>
 
-  <mat-form-field class="post-full-width" appearance="fill">
-    <mat-label>Title</mat-label>
-    <input matInput placeholder="Title" id="title" type="text" formControlName="title">
-  </mat-form-field>
+  <form class="post-form" [formGroup]="postForm" (ngSubmit)="onSubmit()">
 
-  <mat-form-field class="post-full-width" appearance="fill">
-    <mat-label>Content</mat-label>
-    <input matInput placeholder="Content" id="content" type="text" formControlName="content">
-  </mat-form-field>
+    <mat-form-field class="post-full-width" appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Title" id="title" type="text" formControlName="title">
+    </mat-form-field>
 
-  <mat-form-field class="post-full-width" appearance="fill">
-    <mat-label>Author</mat-label>
-    <input matInput placeholder="Author" id="userId" type="userId" formControlName="userId">
-  </mat-form-field>
-  {{ postForm.status }}
-  <button mat-raised-button color="primary" type="submit" [disabled]="!postForm.valid">Submit</button>
-</form>
+    <mat-form-field class="post-full-width" appearance="fill">
+      <mat-label>Content</mat-label>
+      <input matInput placeholder="Content" id="content" type="text" formControlName="content">
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button type="submit" [disabled]="!postForm.valid">Submit</button>
+    </div>
+  </form>
+
+</div>

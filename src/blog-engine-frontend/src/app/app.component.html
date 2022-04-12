@@ -1,6 +1,33 @@
-<ngx-loading [show]="(loadingStatus$ | async)!" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" *ngIf="isLogged()">
+  <a class="navbar-brand" href="#">BLOG ENGINE FRONTEND</a>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/posts">Posts</a>
+      </li>
+      <li class="nav-item">
+        <button (click)="logout()">Logout</button>
+      </li>
+    </ul>
+  </div>
+</nav>
 
-<app-post></app-post>
-<app-post-list></app-post-list>
-<app-comment-list></app-comment-list>
-<app-comment></app-comment>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" *ngIf="!isLogged()">
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/login">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <br />
+  <router-outlet></router-outlet>
+</div>
+
+<ngx-loading [show]="(loadingStatus$ | async)!" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>

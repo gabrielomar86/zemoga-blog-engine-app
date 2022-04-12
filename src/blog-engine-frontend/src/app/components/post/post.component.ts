@@ -15,7 +15,6 @@ export class PostComponent implements OnInit {
     this.postForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       content: ['', [Validators.required]],
-      userId: ['', [Validators.required]],
     });
   }
 
@@ -26,7 +25,9 @@ export class PostComponent implements OnInit {
   onSubmit() {
     this.postService.createPost(this.postForm.value)
       .subscribe(post => {
-        console.log('response', post);
+        alert('post created');
+      }, error => {
+        alert('Error creating post' + error.message);
       });
   }
 

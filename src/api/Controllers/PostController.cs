@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using BlogEngineApp.core.dto;
 using BlogEngineApp.core.extensions;
 using BlogEngineApp.core.interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -29,8 +31,13 @@ namespace BlogEngineApp.api.Controllers
         [Authorize("OnlyWriter")]
         public IActionResult Create([FromBody] PostDto postDto)
         {
-            _postService.CreatePost(postDto);
-            return Created(nameof(Create), postDto);
+            var postResponse = _postService.CreatePost(new PostDto
+            {
+                Title = postDto.Title,
+                Content = postDto.Content,
+                UserId = GetUserId()
+            });
+            return Created(nameof(Create), postResponse);
         }
 
         [HttpPatch]
@@ -48,12 +55,18 @@ namespace BlogEngineApp.api.Controllers
         public IActionResult Get(Guid postId) => Ok(_postService.GetPostById(postId));
 
         [HttpGet]
-        public IActionResult Get() => Ok(_postService.GetAllPosts());
+        public IActionResult Get()
+        {
+            return Ok(_postService.GetAllPosts(GetUserId()));
+        }
 
         [HttpGet]
         [Authorize("OnlyEditor")]
         [Route("pendings")]
-        public IActionResult GetPendings([FromQuery] string userId) => Ok(_postService.GetAllPostsPending(userId));
+        public IActionResult GetPendings([FromQuery] string userId)
+        {
+            return Ok(_postService.GetAllPostsPending(userId));
+        }
 
         [HttpGet]
         [Authorize]
@@ -63,6 +76,13 @@ namespace BlogEngineApp.api.Controllers
         [HttpGet]
         [Route("rejected")]
         public IActionResult GetRejected([FromQuery] string userId) => Ok(_postService.GetAllPostsRejected(userId));
+
+        private string GetUserId()
+        {
+            var context = HttpContext;
+            var claims = context.User.Claims;
+            return claims.First(x => x.Type == "id").Value;
+        }
 
     }
 
