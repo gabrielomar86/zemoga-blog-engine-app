@@ -19,6 +19,7 @@ namespace BlogEngineApp.services
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICommentService, CommentService>();
 
             return services;
         }

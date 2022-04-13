@@ -20,7 +20,7 @@ namespace BlogEngineApp.api.Controllers
         private readonly IUserService _userService;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(ILogger<PostController> logger,
+        public AuthController(ILogger<AuthController> logger,
                                 IConfiguration configuration,
                                 IUserService userService)
         {

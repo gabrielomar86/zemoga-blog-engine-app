@@ -37,4 +37,12 @@ export class PostService {
   public getAllRejectedPosts(): Observable<PostPending[]> {
     return this.httpClient.get<PostPending[]>(`${this.API_URL}/rejected`);
   }
+
+  public approvePost(postId: string): Observable<ArrayBuffer> {
+    return this.httpClient.patch(`${this.API_URL}/${postId}/approve`, null, { responseType: 'arraybuffer' });
+  }
+
+  public rejectPost(postId: string): Observable<ArrayBuffer> {
+    return this.httpClient.patch(`${this.API_URL}/${postId}/reject`, null, { responseType: 'arraybuffer' });
+  }
 }

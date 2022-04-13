@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value.username, this.loginForm.value.password)
       .subscribe(res => {
         sessionStorage.setItem('TOKEN_KEY', res.token);
-        this.router.navigate(['/posts']);
+        this.router.navigate(['/']);
       }, err => {
         alert('Invalid username or password');
       });

@@ -63,19 +63,19 @@ namespace BlogEngineApp.api.Controllers
         [HttpGet]
         [Authorize("OnlyEditor")]
         [Route("pendings")]
-        public IActionResult GetPendings([FromQuery] string userId)
+        public IActionResult GetAllPostsPendings([FromQuery] string userId)
         {
             return Ok(_postService.GetAllPostsPending(userId));
         }
 
         [HttpGet]
-        [Authorize]
         [Route("approved")]
-        public IActionResult GetApproved([FromQuery] string userId) => Ok(_postService.GetAllPostsApproved(userId));
+        public IActionResult GetAllPostsApproved([FromQuery] string userId) => Ok(_postService.GetAllPostsApproved(userId));
 
         [HttpGet]
         [Route("rejected")]
-        public IActionResult GetRejected([FromQuery] string userId) => Ok(_postService.GetAllPostsRejected(userId));
+        [Authorize("OnlyWriter")]
+        public IActionResult GetAllPostRejected() => Ok(_postService.GetAllPostsRejected(GetUserId()));
 
         private string GetUserId()
         {

@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CommentComponent } from './components/comment/comment.component';
 import { LoginComponent } from './components/login/login.component';
-import { PostListComponent } from './components/post-list/post-list.component';
+import { PostListApprovedComponent } from './components/post-list-approved/post-list-approved.component';
+import { PostListPendingComponent } from './components/post-list-pending/post-list-pending.component';
+import { PostListRejectedComponent } from './components/post-list-rejected/post-list-rejected.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
-  {path: 'posts', component: PostListComponent },
+  {path: 'pending', component: PostListPendingComponent },
+  {path: 'approved', component: PostListApprovedComponent },
+  {path: 'rejected', component: PostListRejectedComponent },
   {path: '**', redirectTo: 'home', pathMatch: 'full'}
 ];
 

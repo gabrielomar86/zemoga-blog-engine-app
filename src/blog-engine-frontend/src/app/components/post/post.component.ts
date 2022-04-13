@@ -26,6 +26,7 @@ export class PostComponent implements OnInit {
     this.postService.createPost(this.postForm.value)
       .subscribe(post => {
         alert('post created');
+        this.postForm.reset();
       }, error => {
         alert('Error creating post' + error.message);
       });

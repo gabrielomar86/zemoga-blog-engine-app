@@ -7,6 +7,7 @@ namespace BlogEngineApp.infrastructure.data
         private readonly BlogEngineAppContext _blogEngineAppContext;
         private IPostRepository _postRepository;
         private IUserRepository _userRepository;
+        private ICommentRepository _commentRepository;
 
         public RepositoryWrapper(BlogEngineAppContext blogEngineAppContext)
         {
@@ -38,6 +39,18 @@ namespace BlogEngineApp.infrastructure.data
                     _userRepository = new UserRepository(_blogEngineAppContext);
                 }
                 return _userRepository;
+            }
+        }
+
+        public ICommentRepository CommentRepository
+        {
+            get
+            {
+                if (_commentRepository == null)
+                {
+                    _commentRepository = new CommentRepository(_blogEngineAppContext);
+                }
+                return _commentRepository;
             }
         }
 

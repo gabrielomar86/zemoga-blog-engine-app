@@ -25,6 +25,9 @@ namespace BlogEngineApp.services
 
             CreateMap<Comment, CommentDto>()
                 .ReverseMap();
+            CreateMap<Comment, CommentPresenter>()
+                .ReverseMap();
+
             CreateMap<User, UserDto>()
                 .ReverseMap();
         }
