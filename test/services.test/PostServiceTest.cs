@@ -171,6 +171,44 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
+        public void Should_ChangePostToDeleteStatus()
+        {
+            // Arrange
+            var postService = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(new Post());
+
+            // Act
+            var resultado = postService.ChangePostToDeleteStatus(It.IsAny<Guid>());
+
+            // Assert
+            Assert.IsType<PostDto>(resultado);
+
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Once);
+        }
+
+        [Fact]
+        public void Should_ChangePostToDeleteStatus_NotFound()
+        {
+            // Arrange
+            var posService = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(() => null);
+
+            // Act - Assert
+            var abc = Assert.Throws<NotFoundResponseException>(() => posService.ChangePostToDeleteStatus(It.IsAny<Guid>()));
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Never);
+        }
+
+        [Fact]
         public void Should_ChangePostToRejectStatus()
         {
             // Arrange

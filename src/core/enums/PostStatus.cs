@@ -6,15 +6,15 @@ namespace BlogEngineApp.core.enums
     public enum PostStatus
     {
         /// <summary>
-        /// Create
+        /// CreatePost
         /// </summary>
         CreatePost = 0,
         /// <summary>
-        /// Created
+        /// UpdatePostToCreatedStatus
         /// </summary>
         UpdatePostToCreatedStatus = 1,
         /// <summary>
-        /// Created
+        /// PostCreated
         /// </summary>
         PostCreated = 2,
         /// <summary>
@@ -22,7 +22,7 @@ namespace BlogEngineApp.core.enums
         /// </summary>
         UpdatePostToPendingStatus = 3,
         /// <summary>
-        /// PostChangeToPendingStatus
+        /// PostPending
         /// </summary>
         PostPending = 4,
         /// <summary>
@@ -30,7 +30,7 @@ namespace BlogEngineApp.core.enums
         /// </summary>
         UpdatePostToApprovedStatus = 5,
         /// <summary>
-        /// PostChangedToApprovedStatus
+        /// PostApproved
         /// </summary>
         PostApproved = 6,
         /// <summary>
@@ -38,8 +38,12 @@ namespace BlogEngineApp.core.enums
         /// </summary>
         UpdatePostToRejectStatus = 7,
         /// <summary>
-        /// PostChangedToRejectedStatus
+        /// PostRejected
         /// </summary>
         PostRejected = 8,
+        /// <summary>
+        /// PostDeleted
+        /// </summary>
+        PostDeleted = 9,
     }
 }

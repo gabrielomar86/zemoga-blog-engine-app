@@ -95,6 +95,11 @@ namespace BlogEngineApp.services
             return _mapper.Map<List<PostPresenter>>(GetAllPostsByStatusAndUserId(PostStatus.PostRejected, userId));
         }
 
+        public PostDto ChangePostToDeleteStatus(Guid postId)
+        {
+            return UpdatePostStatus(postId, PostStatus.PostDeleted);
+        }
+
         public PostDto ChangePostToCreatedStatus(Guid postId)
         {
             var postDto = UpdatePostStatus(postId, PostStatus.PostCreated);

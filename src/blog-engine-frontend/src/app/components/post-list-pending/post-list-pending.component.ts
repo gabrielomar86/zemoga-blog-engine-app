@@ -64,4 +64,13 @@ export class PostListPendingComponent implements OnInit {
     }
   }
 
+  deletePost(postId: string) {
+    if(confirm('Are you sure you want to delete this post?')) {
+      this.postService.deletePost(postId)
+      .subscribe(() => {
+        this.loadPendingPost();
+      });
+    }
+  }
+
 }

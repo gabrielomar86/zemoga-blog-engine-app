@@ -4,6 +4,7 @@
     <button mat-list-item routerLink="/pending"> Pending Posts List </button>
     <button mat-list-item routerLink="/approved"> Published Posts List </button>
     <button mat-list-item routerLink="/rejected"> My Rejected Posts List </button>
+    <button color="warn" mat-list-item (click)="logout()"> Logout </button>
   </mat-action-list>
 
   <mat-action-list *ngIf="!isLogged()">

@@ -54,6 +54,15 @@ namespace BlogEngineApp.api.Controllers
             return Ok(postResponse);
         }
 
+        [HttpDelete]
+        [Route("{postId}")]
+        [Authorize("OnlyEditor")]
+        public IActionResult DeletePost(Guid postId)
+        {
+            _postService.ChangePostToDeleteStatus(postId);
+            return Ok();
+        }
+
         [HttpPatch]
         [Authorize("OnlyEditor")]
         [Route("{postId}/approve")]

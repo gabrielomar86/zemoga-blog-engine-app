@@ -14,12 +14,17 @@ export class PostService {
 
   constructor(private httpClient: HttpClient) { }
 
+
+  public createPost(post: PostNew): Observable<PostPending> {
+    return this.httpClient.post<PostPending>(this.API_URL, post);
+  }
+
   public updatePost(postId: string, postUpdate: any): Observable<PostPending> {
     return this.httpClient.put<PostPending>(`${this.API_URL}/${postId}`, postUpdate);
   }
 
-  public createPost(post: PostNew): Observable<PostPending> {
-    return this.httpClient.post<PostPending>(this.API_URL, post);
+  public deletePost(postId: string): Observable<PostPending> {
+    return this.httpClient.delete<PostPending>(`${this.API_URL}/${postId}`);
   }
 
   public getPostById(id: string): Observable<PostPending> {

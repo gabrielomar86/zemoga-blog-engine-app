@@ -10,6 +10,7 @@ namespace BlogEngineApp.core.interfaces
         PostDto CreatePost(PostDto postDto);
         PostDto UpdatePost(PostDto postDto);
         PostPresenter GetPostById(Guid id);
+        PostDto ChangePostToDeleteStatus(Guid postId);
         PostDto ChangePostToCreatedStatus(Guid postId);
         PostDto ChangePostToPendingStatus(Guid postId);
         PostDto ChangePostToRejectStatus(Guid postId);
