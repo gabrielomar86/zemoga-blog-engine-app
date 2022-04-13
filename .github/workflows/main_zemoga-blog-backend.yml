@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'zemoga-blog-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B99986176A41422090671D589AC39179 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DCD32FF85BCC466181E084A9CB208A05 }}
           package: .
