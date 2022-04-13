@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace infrastructure.data.Migrations
 {
     [DbContext(typeof(BlogEngineAppContext))]
-    [Migration("20220411151023_Initial")]
+    [Migration("20220413064000_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,6 +112,13 @@ namespace infrastructure.data.Migrations
                             UserName = "gtarapues",
                             FullName = "Gabriel Tarapues",
                             Password = "ffd84740ecdafd49e91f7c74ab2adfd5",
+                            Role = "Writer"
+                        },
+                        new
+                        {
+                            UserName = "pescobar",
+                            FullName = "Paco Escobar",
+                            Password = "5028f6f64fc46de9a38c68fce3d892b6",
                             Role = "Writer"
                         },
                         new

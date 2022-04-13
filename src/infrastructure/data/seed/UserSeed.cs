@@ -20,6 +20,13 @@ namespace BlogEngineApp.infrastructure.data
                 },
                 new User
                 {
+                    UserName = "pescobar",
+                    Password = StringUtil.GetMd5Hash("writer*456"),
+                    FullName = "Paco Escobar",
+                    Role = Roles.Writer
+                },
+                new User
+                {
                     UserName = "orodriguez",
                     Password = StringUtil.GetMd5Hash("editor*123"),
                     FullName = "Omar Rodriguez",

@@ -114,6 +114,13 @@ namespace infrastructure.data.Migrations
                         },
                         new
                         {
+                            UserName = "pescobar",
+                            FullName = "Paco Escobar",
+                            Password = "5028f6f64fc46de9a38c68fce3d892b6",
+                            Role = "Writer"
+                        },
+                        new
+                        {
                             UserName = "orodriguez",
                             FullName = "Omar Rodriguez",
                             Password = "53496f07969ba549e38b147db6b18e6e",

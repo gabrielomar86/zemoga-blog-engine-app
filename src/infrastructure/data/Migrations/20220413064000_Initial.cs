@@ -80,6 +80,11 @@ namespace infrastructure.data.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserName", "FullName", "Password", "Role" },
+                values: new object[] { "pescobar", "Paco Escobar", "5028f6f64fc46de9a38c68fce3d892b6", "Writer" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserName", "FullName", "Password", "Role" },
                 values: new object[] { "orodriguez", "Omar Rodriguez", "53496f07969ba549e38b147db6b18e6e", "Editor" });
 
             migrationBuilder.CreateIndex(

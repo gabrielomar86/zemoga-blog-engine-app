@@ -15,21 +15,10 @@ export class PostListPendingComponent implements OnInit {
   displayedColumns: string[] = ['id', 'title', 'author', 'submitDate', 'actions'];
   public posts!: PostPending[];
 
-  constructor(private postService: PostService, private router: Router, public dialog: MatDialog) { }
+  constructor(private postService: PostService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadPendingPost();
-  }
-
-  openNewPostDialog(): void {
-    const dialogRef = this.dialog.open(PostComponent, {
-      width: '350px',
-      data: undefined,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loadPendingPost();
-    });
   }
 
   loadPendingPost() {

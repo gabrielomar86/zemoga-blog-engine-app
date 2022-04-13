@@ -1,6 +1,7 @@
 <div class="container">
   <mat-action-list *ngIf="isLogged()">
     <button mat-list-item routerLink="/"> Home </button>
+    <button mat-list-item (click)="openNewPostDialog()"> Create new Post </button>
     <button mat-list-item routerLink="/pending"> Pending Posts List </button>
     <button mat-list-item routerLink="/approved"> Published Posts List </button>
     <button mat-list-item routerLink="/rejected"> My Rejected Posts List </button>
