@@ -1,37 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary" *ngIf="isLogged()">
-  <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/pending">Pending Posts List</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/approved">Published Posts List</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/rejected">Rejected Posts List</a>
-      </li>
-      <li class="nav-item">
-        <button (click)="logout()">Logout</button>
-      </li>
-    </ul>
-  </div>
-</nav>
+<div class="container">
+  <mat-action-list *ngIf="isLogged()">
+    <button mat-list-item routerLink="/"> Home </button>
+    <button mat-list-item routerLink="/pending"> Pending Posts List </button>
+    <button mat-list-item routerLink="/approved"> Published Posts List </button>
+    <button mat-list-item routerLink="/rejected"> My Rejected Posts List </button>
+  </mat-action-list>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary" *ngIf="!isLogged()">
-  <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/login">Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/approved">Published Post List</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+  <mat-action-list *ngIf="!isLogged()">
+    <button mat-list-item routerLink="/login"> Login </button>
+    <button mat-list-item routerLink="/approved"> Published Post List </button>
+  </mat-action-list>
+</div>
 
 <div class="container">
   <br />

@@ -24,7 +24,7 @@ export class PostListPendingComponent implements OnInit {
   openNewPostDialog(): void {
     const dialogRef = this.dialog.open(PostComponent, {
       width: '350px',
-      data: {},
+      data: undefined,
     });
 
     dialogRef.afterClosed().subscribe(result => {

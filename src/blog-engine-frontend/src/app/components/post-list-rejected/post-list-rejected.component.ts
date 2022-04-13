@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PostPending } from 'src/app/core/post-pending.interface';
+import { PostUpdate } from 'src/app/core/post-update.interface';
 import { PostService } from 'src/app/services/post.service';
 import { PostComponent } from '../post/post.component';
 
@@ -12,7 +13,7 @@ import { PostComponent } from '../post/post.component';
 })
 export class PostListRejectedComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'title', 'author', 'submitDate'];
+  displayedColumns: string[] = ['id', 'title', 'author', 'submitDate', 'actions'];
   public posts!: PostPending[];
 
   constructor(private postService: PostService, private router: Router, public dialog: MatDialog) { }
@@ -21,10 +22,10 @@ export class PostListRejectedComponent implements OnInit {
     this.loadPendingPost();
   }
 
-  openNewPostDialog(): void {
+  openNewPostDialog(post: PostUpdate): void {
     const dialogRef = this.dialog.open(PostComponent, {
       width: '350px',
-      data: {},
+      data: post,
     });
 
     dialogRef.afterClosed().subscribe(result => {

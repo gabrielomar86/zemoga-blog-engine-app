@@ -29,7 +29,7 @@ namespace BlogEngineApp.api.Controllers
 
         [HttpPost]
         [Authorize("OnlyWriter")]
-        public IActionResult Create([FromBody] PostDto postDto)
+        public IActionResult CreatePost([FromBody] PostDto postDto)
         {
             var postResponse = _postService.CreatePost(new PostDto
             {
@@ -37,7 +37,21 @@ namespace BlogEngineApp.api.Controllers
                 Content = postDto.Content,
                 UserId = GetUserId()
             });
-            return Created(nameof(Create), postResponse);
+            return Created(nameof(UpdatePost), postResponse);
+        }
+
+        [HttpPut]
+        [Route("{postId}")]
+        [Authorize("OnlyWriter")]
+        public IActionResult UpdatePost(Guid postId, [FromBody] PostDto postDto)
+        {
+            var postResponse = _postService.UpdatePost(new PostDto
+            {
+                Id = postId,
+                Title = postDto.Title,
+                Content = postDto.Content
+            });
+            return Ok(postResponse);
         }
 
         [HttpPatch]

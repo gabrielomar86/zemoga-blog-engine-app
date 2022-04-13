@@ -14,6 +14,10 @@ export class PostService {
 
   constructor(private httpClient: HttpClient) { }
 
+  public updatePost(postId: string, postUpdate: any): Observable<PostPending> {
+    return this.httpClient.put<PostPending>(`${this.API_URL}/${postId}`, postUpdate);
+  }
+
   public createPost(post: PostNew): Observable<PostPending> {
     return this.httpClient.post<PostPending>(this.API_URL, post);
   }

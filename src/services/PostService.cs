@@ -26,6 +26,22 @@ namespace BlogEngineApp.services
             _creationPostFlowNotifier = creationPostFlowNotifier;
         }
 
+        public PostDto UpdatePost(PostDto postDto)
+        {
+            var post = _repositoryWrapper.PostRepository.GetById(postDto.Id);
+            if (post == null)
+            {
+                throw new NotFoundResponseException("Post not found");
+            }
+            post.Title = postDto.Title;
+            post.Content = postDto.Content;
+
+            _repositoryWrapper.PostRepository.Update(post);
+            var postDtoResponse = _mapper.Map<PostDto>(post);
+
+            return postDtoResponse;
+        }
+
         public PostDto CreatePost(PostDto postDto)
         {
             var post = _mapper.Map<Post>(postDto);

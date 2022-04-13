@@ -8,6 +8,7 @@ namespace BlogEngineApp.core.interfaces
     public interface IPostService
     {
         PostDto CreatePost(PostDto postDto);
+        PostDto UpdatePost(PostDto postDto);
         PostPresenter GetPostById(Guid id);
         PostDto ChangePostToCreatedStatus(Guid postId);
         PostDto ChangePostToPendingStatus(Guid postId);

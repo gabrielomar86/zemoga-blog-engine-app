@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']);
       }, err => {
         alert('Invalid username or password');
+        this.loginForm.reset();
       });
   }
 

@@ -69,6 +69,49 @@ namespace BlogEngineApp.services.test
         }
 
         [Fact]
+        public void Should_UpdatePost()
+        {
+            // Arrange
+            var postService = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()))
+                .Returns(new Post());
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.Update(It.IsAny<Post>()));
+
+            // Act
+            var resultado = postService.UpdatePost(new PostDto());
+
+            // Assert
+            Assert.IsType<PostDto>(resultado);
+
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Once);
+        }
+
+        [Fact]
+        public void Should_UpdatePost_NotFound_Post()
+        {
+            // Arrange
+            var postService = GetPostService();
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()));
+            _mockRepositoryWrapper
+                .Setup(mrw => mrw.PostRepository.Update(It.IsAny<Post>()));
+
+            // Act
+            Assert.Throws<NotFoundResponseException>(() => postService.UpdatePost(new PostDto()));
+
+            // Assert
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.GetById(It.IsAny<Guid>()), Times.Once);
+            _mockRepositoryWrapper
+                .Verify(mrw => mrw.PostRepository.Update(It.IsAny<Post>()), Times.Never);
+        }
+
+        [Fact]
         public void Should_GetPostById()
         {
             // Arrange

@@ -31,9 +31,9 @@ export class CommentComponent implements OnInit {
   onSubmit() {
     this.commentService.createComment(this.data.postId!, this.commentForm.value.detail)
       .subscribe(post => {
-        alert('comment sent');
         this.commentForm.reset();
         this.loadPendingComments(this.data.postId!);
+        alert('comment sent');
       }, error => {
         alert('Error creating comment' + error.message);
       });
